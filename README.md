@@ -61,6 +61,7 @@ npm run dev
 | `npm run build`                | Compila la versión de producción en `dist/`                     |
 | `npm run db:start` / `db:stop` | Levanta o detiene Supabase local (requiere Docker)              |
 | `npm run db:reset`             | Recrea la base de datos local con migraciones y datos de prueba |
+| `npm run db:types`             | Regenera los tipos de TypeScript desde la base de datos         |
 | `npm run db:test`              | Pruebas de la base de datos con pgTAP                           |
 
 ## Base de datos
@@ -86,6 +87,15 @@ Las reglas que protegen los datos viven en PostgreSQL, no en React. Ejemplos de 
 | Visitante sin sesión                      | Nada                                                                                                         |
 
 Nadie escribe directamente en las tablas: las escrituras pasarán por funciones SQL que validan permisos y estados. Las políticas se prueban con 8 perfiles de usuario, incluido un usuario anónimo que intenta hacerse pasar por creador. Además, se comprobó que al abrir a propósito una política, las pruebas fallan.
+
+### Cómo se escribe: solo mediante funciones SQL
+
+Los clientes no pueden escribir en ninguna tabla. Cada acción (crear una rifa, repartir los números, activar un acceso, vender, confirmar un pago…) es una función de PostgreSQL que, en una sola transacción, valida quién actúa, bloquea el número, comprueba la versión para detectar cambios simultáneos, valida la transición de estado y registra el evento en el log ([ADR 0003](docs/adr/0003-escrituras-mediante-funciones-sql.md)).
+
+- **Doble toque o reintento:** cada operación lleva un `request_id`; si llega dos veces, la segunda devuelve el estado actual sin repetir nada.
+- **Dos pestañas o dos personas a la vez:** la fila del número se bloquea y la versión obsoleta recibe `R4A_CONFLICT`. Verificado con dos sesiones simultáneas.
+- **PIN:** 5 intentos fallidos bloquean el acceso 15 minutos; cada intento queda en el log, nunca el PIN.
+- **Dispositivos:** como máximo 2 por colaborador; el tercero reemplaza al usado hace más tiempo.
 
 Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecuta en cada push.
 

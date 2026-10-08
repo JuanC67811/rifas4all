@@ -91,13 +91,33 @@ select set_eq(
     'private.is_creator()',
     'private.owns_raffle(uuid)',
     'private.current_collaborator_id(uuid)',
-    -- RPC
-    'public.get_collaborator_home(uuid)'
+    -- RPC: lectura
+    'public.get_collaborator_home(uuid)',
+    'public.get_distribution_summary(uuid)',
+    'public.get_invitation_preview(text)',
+    -- RPC: creador (fase 2.3)
+    'public.update_profile(text, text, boolean, boolean)',
+    'public.create_raffle(text, bigint, text, date, date, text, text, boolean, text)',
+    'public.update_raffle(uuid, jsonb)',
+    'public.close_raffle(uuid)',
+    'public.delete_raffle(uuid, text)',
+    'public.set_collaborators(uuid, jsonb)',
+    'public.update_collaborator(uuid, text, text)',
+    'public.preview_distribution(uuid, distribution_method)',
+    'public.confirm_distribution(uuid)',
+    'public.get_access_credentials(uuid)',
+    'public.set_collaborator_paused(uuid, boolean)',
+    'public.regenerate_access(uuid)',
+    -- RPC: colaborador y ventas (fase 2.3)
+    'public.activate_access(text, text)',
+    'public.register_sale(uuid, smallint, sale_status, text, text, integer, uuid, text, text)',
+    'public.change_sale_status(uuid, smallint, text, integer, uuid, text)',
+    'public.update_buyer(uuid, smallint, text, text, integer, uuid, text, text)'
   ],
   'solo las funciones de la lista blanca son ejecutables por authenticated'
 );
 
-select is_empty(
+select set_eq(
   $$
     select n.nspname || '.' || p.proname || '(' || oidvectortypes(p.proargtypes) || ')'
       from pg_proc p
@@ -105,7 +125,8 @@ select is_empty(
      where n.nspname in ('public', 'private')
        and has_function_privilege('anon', p.oid, 'execute')
   $$,
-  'ninguna función es ejecutable por un visitante sin sesión (todavía)'
+  array['public.get_invitation_preview(text)'],
+  'un visitante sin sesión solo puede consultar la vista previa de un enlace'
 );
 
 -- Las funciones con privilegios elevados deben fijar search_path.
