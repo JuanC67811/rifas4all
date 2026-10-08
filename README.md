@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **1 — Fundaciones** (herramientas, TypeScript estricto, pruebas y CI). Ver [plan por fases](#estado-del-proyecto).
+> 🚧 **En desarrollo.** Fase actual: **2 — Base de datos** (modelo de datos, permisos, Row Level Security y pruebas pgTAP). Ver [plan por fases](#estado-del-proyecto).
 
 ## Cómo funciona
 
@@ -63,6 +63,21 @@ npm run dev
 | `npm run db:reset`             | Recrea la base de datos local con migraciones y datos de prueba |
 | `npm run db:test`              | Pruebas de la base de datos con pgTAP                           |
 
+## Base de datos
+
+Las reglas que protegen los datos viven en PostgreSQL, no en React. Ejemplos de lo que la base de datos rechaza aunque el código de la aplicación tuviera un error:
+
+| Regla                                                        | Cómo se garantiza                                                                                                                        |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Un número nunca tiene dos ventas activas                     | Índice único parcial sobre `sales (raffle_id, number) WHERE status <> cancelled`                                                         |
+| Un colaborador solo vende sus propios números                | Clave foránea compuesta `(raffle_id, number, collaborator_id)`                                                                           |
+| El estado público del número coincide con su venta           | Se deriva por trigger desde `sales`                                                                                                      |
+| Máximo 12 colaboradores y 5 rifas por cuenta                 | `CHECK` de posición 1–12 + `UNIQUE`; trigger con bloqueo de fila                                                                         |
+| El log no se puede modificar ni contiene datos del comprador | Trigger contra `UPDATE`/`TRUNCATE` + `CHECK` sobre `details`                                                                             |
+| Nada es accesible desde la API sin permiso explícito         | Permisos revocados por defecto, esquema `private`, RLS en todas las tablas ([ADR 0002](docs/adr/0002-permisos-denegados-por-defecto.md)) |
+
+Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecuta en cada push.
+
 ## Estructura
 
 ```
@@ -80,8 +95,8 @@ npm run dev
 
 | Fase | Contenido                                                            | Estado      |
 | ---- | -------------------------------------------------------------------- | ----------- |
-| 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | 🔄 En curso |
-| 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | ⏳          |
+| 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | ✅          |
+| 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | 🔄 En curso |
 | 3    | Cuenta del creador y gestión de rifas                                | ⏳          |
 | 4    | Colaboradores, reparto de números, enlaces y PIN                     | ⏳          |
 | 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳          |
