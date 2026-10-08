@@ -3,6 +3,9 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
+-- Cada archivo parte de una base vacía. Los datos del seed vuelven con el rollback final.
+delete from auth.users;
+
 select plan(36);
 
 create function pg_temp.as_user(p_user_id uuid, p_is_anonymous boolean)
@@ -312,9 +315,10 @@ select is(
 );
 select is(
   (select count(*)::int from public.audit_events
-    where raffle_id = :'raffle_id' and action like 'sale.%' and request_id is null),
+    where raffle_id = :'raffle_id' and action like 'sale.%'
+      and actor_type <> 'system' and request_id is null),
   0,
-  'todos los eventos de ventas guardan su request_id'
+  'todo evento de venta hecho por una persona guarda su request_id'
 );
 
 select * from finish();

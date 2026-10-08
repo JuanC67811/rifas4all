@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **2 — Base de datos** (modelo de datos, permisos, Row Level Security y pruebas pgTAP). Ver [plan por fases](#estado-del-proyecto).
+> 🚧 **En desarrollo.** Fase actual: **3 — Cuenta del creador y gestión de rifas**. La base de datos (fase 2) está completa. Ver [plan por fases](#estado-del-proyecto).
 
 ## Cómo funciona
 
@@ -97,7 +97,26 @@ Los clientes no pueden escribir en ninguna tabla. Cada acción (crear una rifa, 
 - **PIN:** 5 intentos fallidos bloquean el acceso 15 minutos; cada intento queda en el log, nunca el PIN.
 - **Dispositivos:** como máximo 2 por colaborador; el tercero reemplaza al usado hace más tiempo.
 
+### Tareas programadas (pg_cron)
+
+| Cada       | Tarea                                                                                                                                                                                                                                   |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 15 minutos | Marca como vencidos los pagos pasada la fecha límite · cierra las rifas 2 días después del sorteo (solo lectura) · borra por completo las rifas 4 días después del sorteo · encola el resumen diario de cada creador tras su medianoche |
+| Día        | Elimina los usuarios anónimos (navegadores de colaboradores) sin sesión activa                                                                                                                                                          |
+
+Todas son idempotentes: si se ejecutan dos veces, la segunda no cambia nada. Además, las funciones de venta comprueban la hora de cierre por su cuenta, así que nunca se puede vender después del cierre aunque la tarea se retrase.
+
 Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecuta en cada push.
+
+## Datos de ejemplo
+
+`npm run db:reset` recrea la base de datos local con una cuenta de demostración:
+
+| Correo                 | Contraseña       |
+| ---------------------- | ---------------- |
+| `demo@rifas4all.local` | `rifas4all-demo` |
+
+Incluye una rifa activa ("Canasta Navideña", 3 colaboradores, 7 ventas en distintos estados) y una rifa en borrador. Estas credenciales solo existen en la base de datos local. Los enlaces de los colaboradores se consultan en Supabase Studio (la consulta está al final de `supabase/seed.sql`).
 
 ## Estructura
 
@@ -114,16 +133,16 @@ Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecu
 
 ## Estado del proyecto
 
-| Fase | Contenido                                                            | Estado      |
-| ---- | -------------------------------------------------------------------- | ----------- |
-| 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | ✅          |
-| 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | 🔄 En curso |
-| 3    | Cuenta del creador y gestión de rifas                                | ⏳          |
-| 4    | Colaboradores, reparto de números, enlaces y PIN                     | ⏳          |
-| 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳          |
-| 6    | Vencimientos, recordatorios y resumen diario por correo              | ⏳          |
-| 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ⏳          |
-| 8    | Seguridad, accesibilidad, rendimiento y publicación                  | ⏳          |
+| Fase | Contenido                                                            | Estado |
+| ---- | -------------------------------------------------------------------- | ------ |
+| 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | ✅     |
+| 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | ✅     |
+| 3    | Cuenta del creador y gestión de rifas                                | ⏳     |
+| 4    | Colaboradores, reparto de números, enlaces y PIN                     | ⏳     |
+| 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳     |
+| 6    | Vencimientos, recordatorios y resumen diario por correo              | ⏳     |
+| 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ⏳     |
+| 8    | Seguridad, accesibilidad, rendimiento y publicación                  | ⏳     |
 
 ## Limitaciones conocidas
 

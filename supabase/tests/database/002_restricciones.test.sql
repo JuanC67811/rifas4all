@@ -4,6 +4,9 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
+-- Cada archivo parte de una base vacía. Los datos del seed vuelven con el rollback final.
+delete from auth.users;
+
 select plan(36);
 
 -- Datos de partida ----------------------------------------------------------------
