@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens: colores con nombre semántico. El modo oscuro solo cambia los valores.
+ * Los estados de los números (libre, apartado, por pagar, pagado, vencido) se añadirán
+ * en la Fase 5, siempre acompañados de texto e icono, nunca solo por color.
+ */
+@theme {
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f4f5;
+  --color-text: #18181b;
+  --color-muted: #52525b;
+  --color-border: #d4d4d8;
+  --color-brand: #0f766e;
+  --color-brand-contrast: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: #18181b;
+    --color-surface-muted: #27272a;
+    --color-text: #fafafa;
+    --color-muted: #a1a1aa;
+    --color-border: #3f3f46;
+    --color-brand: #2dd4bf;
+    --color-brand-contrast: #042f2e;
+  }
+}
+
+html {
+  /* 16 px mínimo: evita el zoom automático de iOS al enfocar campos. */
+  font-size: 100%;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}

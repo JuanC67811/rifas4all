@@ -1,0 +1,5 @@
+# Finales de línea LF en el repositorio aunque se trabaje en Windows.
+# Evita diffs falsos y scripts SQL/shell rotos en CI (Linux).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
