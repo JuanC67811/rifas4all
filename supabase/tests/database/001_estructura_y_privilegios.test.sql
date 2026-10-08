@@ -3,7 +3,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
-select plan(14);
+select plan(15);
 
 -- Esquemas y tablas ------------------------------------------------------------
 select has_schema('private', 'existe el esquema privado');
@@ -49,42 +49,69 @@ select is_empty(
 );
 
 -- Privilegios de los clientes ---------------------------------------------------
-select is_empty(
+-- Los clientes solo pueden LEER (filtrado por RLS) las tablas públicas. Ningún
+-- INSERT/UPDATE/DELETE directo, nada para `anon` y nada en el esquema privado.
+select set_eq(
   $$
     select grantee || ' → ' || table_schema || '.' || table_name || ' (' || privilege_type || ')'
       from information_schema.role_table_grants
      where table_schema in ('public', 'private')
        and grantee in ('anon', 'authenticated', 'PUBLIC')
   $$,
-  'anon y authenticated no tienen permisos sobre ninguna tabla'
+  array[
+    'authenticated → public.profiles (SELECT)',
+    'authenticated → public.raffles (SELECT)',
+    'authenticated → public.collaborators (SELECT)',
+    'authenticated → public.collaborator_sessions (SELECT)',
+    'authenticated → public.raffle_numbers (SELECT)',
+    'authenticated → public.sales (SELECT)',
+    'authenticated → public.audit_events (SELECT)',
+    'authenticated → public.daily_digests (SELECT)'
+  ],
+  'los clientes solo tienen SELECT sobre las tablas públicas'
 );
 
 select ok(
-  not has_schema_privilege('anon', 'private', 'usage')
-    and not has_schema_privilege('authenticated', 'private', 'usage'),
-  'los clientes no pueden usar el esquema privado'
+  not has_schema_privilege('anon', 'private', 'usage'),
+  'un visitante sin sesión no puede usar el esquema privado'
 );
 
--- Lista blanca de funciones ejecutables por los clientes. Hoy está vacía;
--- las fases siguientes la amplían función por función.
-select is_empty(
+-- Lista blanca de funciones ejecutables por los clientes. Cada fase que añade
+-- una función accesible tiene que añadirla aquí de forma consciente.
+select set_eq(
   $$
-    select p.oid::regprocedure::text
+    select n.nspname || '.' || p.proname || '(' || oidvectortypes(p.proargtypes) || ')'
       from pg_proc p
       join pg_namespace n on n.oid = p.pronamespace
      where n.nspname in ('public', 'private')
-       and (
-         has_function_privilege('anon', p.oid, 'execute')
-         or has_function_privilege('authenticated', p.oid, 'execute')
-       )
+       and has_function_privilege('authenticated', p.oid, 'execute')
   $$,
-  'ninguna función de public/private es ejecutable por anon o authenticated'
+  array[
+    -- Helpers usados por las políticas RLS (fase 2.2)
+    'private.is_creator()',
+    'private.owns_raffle(uuid)',
+    'private.current_collaborator_id(uuid)',
+    -- RPC
+    'public.get_collaborator_home(uuid)'
+  ],
+  'solo las funciones de la lista blanca son ejecutables por authenticated'
+);
+
+select is_empty(
+  $$
+    select n.nspname || '.' || p.proname || '(' || oidvectortypes(p.proargtypes) || ')'
+      from pg_proc p
+      join pg_namespace n on n.oid = p.pronamespace
+     where n.nspname in ('public', 'private')
+       and has_function_privilege('anon', p.oid, 'execute')
+  $$,
+  'ninguna función es ejecutable por un visitante sin sesión (todavía)'
 );
 
 -- Las funciones con privilegios elevados deben fijar search_path.
 select is_empty(
   $$
-    select p.oid::regprocedure::text
+    select n.nspname || '.' || p.proname || '(' || oidvectortypes(p.proargtypes) || ')'
       from pg_proc p
       join pg_namespace n on n.oid = p.pronamespace
      where n.nspname in ('public', 'private')

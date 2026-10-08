@@ -76,6 +76,17 @@ Las reglas que protegen los datos viven en PostgreSQL, no en React. Ejemplos de 
 | El log no se puede modificar ni contiene datos del comprador | Trigger contra `UPDATE`/`TRUNCATE` + `CHECK` sobre `details`                                                                             |
 | Nada es accesible desde la API sin permiso explícito         | Permisos revocados por defecto, esquema `private`, RLS en todas las tablas ([ADR 0002](docs/adr/0002-permisos-denegados-por-defecto.md)) |
 
+### Quién puede leer qué (Row Level Security)
+
+| Quién                                     | Qué ve                                                                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Creador                                   | Todo lo de **sus** rifas; nada de otras cuentas                                                              |
+| Colaborador (enlace activado)             | El tablero completo de su rifa (número y estado), pero **solo los compradores y eventos de su propia lista** |
+| Colaborador pausado o con sesión revocada | Nada, desde la siguiente petición                                                                            |
+| Visitante sin sesión                      | Nada                                                                                                         |
+
+Nadie escribe directamente en las tablas: las escrituras pasarán por funciones SQL que validan permisos y estados. Las políticas se prueban con 8 perfiles de usuario, incluido un usuario anónimo que intenta hacerse pasar por creador. Además, se comprobó que al abrir a propósito una política, las pruebas fallan.
+
 Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecuta en cada push.
 
 ## Estructura
