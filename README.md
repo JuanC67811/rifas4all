@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **3 — Cuenta del creador y gestión de rifas**. La base de datos (fase 2) está completa. Ver [plan por fases](#estado-del-proyecto).
+> 🚧 **En desarrollo.** Fase actual: **4 — Colaboradores, reparto, enlaces y PIN**. Ya funcionan la base de datos completa y la cuenta del organizador con la gestión de rifas. Ver [plan por fases](#estado-del-proyecto).
 
 ## Cómo funciona
 
@@ -118,6 +118,17 @@ Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecu
 
 Incluye una rifa activa ("Canasta Navideña", 3 colaboradores, 7 ventas en distintos estados) y una rifa en borrador. Estas credenciales solo existen en la base de datos local. Los enlaces de los colaboradores se consultan en Supabase Studio (la consulta está al final de `supabase/seed.sql`).
 
+## Frontend
+
+| Capa            | Qué contiene                                                       | Ejemplo                                                                                                                |
+| --------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `src/domain/`   | Reglas en TypeScript puro, sin React ni Supabase                   | Dinero en unidades menores, fechas civiles por zona horaria, validación del formulario de rifa                         |
+| `src/lib/`      | Infraestructura compartida                                         | Cliente de Supabase, traducción centralizada de errores (`R4A_CONFLICT` → mensaje en español), caché de TanStack Query |
+| `src/features/` | Una carpeta por funcionalidad: datos (`api.ts`), hooks y pantallas | `auth/`, `raffles/`                                                                                                    |
+| `src/ui/`       | Componentes reutilizables y accesibles                             | Botones de 48 px de alto, campos con etiqueta y error asociados, avisos que se anuncian al lector de pantalla          |
+
+Decisiones de accesibilidad aplicadas desde el inicio: etiquetas visibles en todos los campos, errores enlazados con `aria-describedby`, foco en el primer campo con error, estados con icono y texto (nunca solo color), título de pestaña por pantalla, enlace "Saltar al contenido" y textos de 16 px para que iOS no haga zoom.
+
 ## Estructura
 
 ```
@@ -137,7 +148,7 @@ Incluye una rifa activa ("Canasta Navideña", 3 colaboradores, 7 ventas en disti
 | ---- | -------------------------------------------------------------------- | ------ |
 | 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | ✅     |
 | 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | ✅     |
-| 3    | Cuenta del creador y gestión de rifas                                | ⏳     |
+| 3    | Cuenta del creador y gestión de rifas                                | ✅     |
 | 4    | Colaboradores, reparto de números, enlaces y PIN                     | ⏳     |
 | 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳     |
 | 6    | Vencimientos, recordatorios y resumen diario por correo              | ⏳     |
