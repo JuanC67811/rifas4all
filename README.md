@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **4 — Colaboradores, reparto, enlaces y PIN**. Ya funcionan la base de datos completa y la cuenta del organizador con la gestión de rifas. Ver [plan por fases](#estado-del-proyecto).
+> 🚧 **En desarrollo.** Fase actual: **5 — Tablero, ventas, pagos y tiempo real**. Ya funcionan la base de datos completa, la cuenta del organizador, la gestión de rifas, el reparto de números y el acceso de colaboradores con enlace y PIN. Ver [plan por fases](#estado-del-proyecto).
 
 ## Cómo funciona
 
@@ -118,6 +118,14 @@ Todo esto está cubierto por pruebas pgTAP en `supabase/tests/`, que la CI ejecu
 
 Incluye una rifa activa ("Canasta Navideña", 3 colaboradores, 7 ventas en distintos estados) y una rifa en borrador. Estas credenciales solo existen en la base de datos local. Los enlaces de los colaboradores se consultan en Supabase Studio (la consulta está al final de `supabase/seed.sql`).
 
+## Acceso de colaboradores (sin cuenta)
+
+1. El organizador copia el mensaje de cada colaborador (enlace + PIN opcional) y lo envía por donde quiera.
+2. El colaborador abre el enlace, lee el aviso de responsabilidad, confirma "Sí, soy Carlos" y escribe el PIN.
+3. Su navegador recibe una sesión anónima de Supabase ligada a Carlos: desde ahí la base de datos lo reconoce sin contraseña.
+
+El token viaja en el fragmento de la URL (`#`), que nunca llega al servidor, y se borra de la barra de direcciones al abrir el enlace. Cinco PIN incorrectos bloquean el acceso 15 minutos. El organizador puede pausar un acceso o generar uno nuevo; ninguna de las dos cosas toca números ni ventas. Detalles y alternativas en el [ADR 0004](docs/adr/0004-acceso-de-colaboradores-sin-cuenta.md).
+
 ## Frontend
 
 | Capa            | Qué contiene                                                       | Ejemplo                                                                                                                |
@@ -149,7 +157,7 @@ Decisiones de accesibilidad aplicadas desde el inicio: etiquetas visibles en tod
 | 1    | Repositorio, herramientas, TypeScript estricto, pruebas, CI          | ✅     |
 | 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | ✅     |
 | 3    | Cuenta del creador y gestión de rifas                                | ✅     |
-| 4    | Colaboradores, reparto de números, enlaces y PIN                     | ⏳     |
+| 4    | Colaboradores, reparto de números, enlaces y PIN                     | ✅     |
 | 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳     |
 | 6    | Vencimientos, recordatorios y resumen diario por correo              | ⏳     |
 | 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ⏳     |

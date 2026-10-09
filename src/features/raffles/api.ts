@@ -17,11 +17,14 @@ export type Raffle = {
   drawDate: string
   paymentDeadline: string
   timeZone: string
+  distributionMethod: DistributionMethod | null
   createdAt: string
 }
 
+export type DistributionMethod = 'ordered' | 'random'
+
 const COLUMNS =
-  'id, name, description, status, price_minor, currency, draw_date, payment_deadline, time_zone, created_at'
+  'id, name, description, status, price_minor, currency, draw_date, payment_deadline, time_zone, distribution_method, created_at'
 
 type RaffleRow = {
   id: string
@@ -33,6 +36,7 @@ type RaffleRow = {
   draw_date: string
   payment_deadline: string
   time_zone: string
+  distribution_method: DistributionMethod | null
   created_at: string
 }
 
@@ -47,6 +51,7 @@ function toRaffle(row: RaffleRow): Raffle {
     drawDate: row.draw_date,
     paymentDeadline: row.payment_deadline,
     timeZone: row.time_zone,
+    distributionMethod: row.distribution_method,
     createdAt: row.created_at,
   }
 }

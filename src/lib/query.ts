@@ -25,4 +25,8 @@ export function createQueryClient() {
 export const queryKeys = {
   raffles: ['raffles'] as const,
   raffle: (id: string) => ['raffles', id] as const,
+  collaborators: (raffleId: string) => ['raffles', raffleId, 'collaborators'] as const,
+  distribution: (raffleId: string) => ['raffles', raffleId, 'distribution'] as const,
+  invitation: (token: string) => ['invitation', token] as const,
+  collaboratorHome: (raffleId: string) => ['collaborator', raffleId] as const,
 }

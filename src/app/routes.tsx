@@ -12,12 +12,13 @@ import {
   RaffleDetailPage,
   RafflesPage,
 } from '@/features/raffles/pages'
+import { CollaboratorHomePage, InvitationPage } from '@/features/collaborator/pages'
 import { AppShell } from './AppShell'
 import { HomePage, NotFoundPage } from './HomePage'
 
 /**
  * Rutas de la aplicación (en español, como las verá quien use la app).
- * Las del colaborador (/i, /r/:id) llegan en la fase 4.
+ * /i y /r/:id son del colaborador: sin cuenta, con la sesión de su dispositivo.
  */
 export const routes: RouteObject[] = [
   {
@@ -43,6 +44,8 @@ export const routes: RouteObject[] = [
           { path: 'rifas/:raffleId/editar', element: <EditRafflePage /> },
         ],
       },
+      { path: 'i', element: <InvitationPage /> },
+      { path: 'r/:raffleId', element: <CollaboratorHomePage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

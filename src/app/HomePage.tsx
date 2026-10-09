@@ -1,4 +1,5 @@
 import { useAuth } from '@/features/auth/auth-context'
+import { lastRaffle } from '@/features/collaborator/last-raffle'
 import { ButtonLink } from '@/ui/Button'
 import { Card, Page } from '@/ui/layout'
 import { useDocumentTitle } from '@/ui/useDocumentTitle'
@@ -13,6 +14,7 @@ const STEPS = [
 export function HomePage() {
   useDocumentTitle('')
   const { session } = useAuth()
+  const collaboratorRaffle = session ? null : lastRaffle()
 
   return (
     <Page>
@@ -24,6 +26,12 @@ export function HomePage() {
           Para rifas familiares, escolares y de barrio. Gratis y desde el teléfono.
         </p>
       </section>
+
+      {collaboratorRaffle && (
+        <ButtonLink to={`/r/${collaboratorRaffle}`} fullWidth>
+          Volver a mis números
+        </ButtonLink>
+      )}
 
       {session ? (
         <ButtonLink to="/rifas" fullWidth>

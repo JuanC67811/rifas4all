@@ -14,9 +14,12 @@ export function AppShell() {
     setSigningOut(true)
     try {
       await signOut()
-      navigate('/entrar', { replace: true })
+    } catch {
+      // Aunque el servidor falle (por ejemplo, la sesión ya expiró), la sesión local
+      // se descarta igual: se lleva a la persona a Entrar en cualquier caso.
     } finally {
       setSigningOut(false)
+      navigate('/entrar', { replace: true })
     }
   }
 

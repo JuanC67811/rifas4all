@@ -56,6 +56,7 @@ export function TextField({
   hint,
   error,
   id,
+  className,
   ...props
 }: CommonProps & InputHTMLAttributes<HTMLInputElement>) {
   const generatedId = useId()
@@ -65,7 +66,7 @@ export function TextField({
       {(describedBy) => (
         <input
           id={fieldId}
-          className={CONTROL}
+          className={className ? `${CONTROL} ${className}` : CONTROL}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           {...props}

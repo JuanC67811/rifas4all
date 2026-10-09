@@ -1,4 +1,10 @@
-import { allRaffleNumbers, formatRaffleNumber, isRaffleNumber, RAFFLE_SIZE } from './raffle-number'
+import {
+  allRaffleNumbers,
+  formatNumberList,
+  formatRaffleNumber,
+  isRaffleNumber,
+  RAFFLE_SIZE,
+} from './raffle-number'
 
 describe('formatRaffleNumber', () => {
   it.each([
@@ -35,5 +41,23 @@ describe('allRaffleNumbers', () => {
     expect(numbers[0]).toBe(0)
     expect(numbers.at(-1)).toBe(99)
     expect(new Set(numbers).size).toBe(RAFFLE_SIZE)
+  })
+})
+
+describe('formatNumberList', () => {
+  it('agrupa un reparto en orden como un solo tramo', () => {
+    expect(formatNumberList(Array.from({ length: 34 }, (_, i) => i))).toBe('00–33')
+  })
+
+  it('mezcla tramos y números sueltos', () => {
+    expect(formatNumberList([11, 0, 1, 2, 3, 7, 9, 10])).toBe('00–03, 07, 09–11')
+  })
+
+  it('escribe separados dos números seguidos', () => {
+    expect(formatNumberList([7, 8, 20])).toBe('07, 08, 20')
+  })
+
+  it('devuelve un texto vacío para una lista vacía', () => {
+    expect(formatNumberList([])).toBe('')
   })
 })

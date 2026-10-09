@@ -9,6 +9,7 @@ import {
   MAX_RAFFLES_PER_ACCOUNT,
   type RaffleFormValues,
 } from '@/domain/raffle'
+import { RaffleCollaboratorsSection } from '@/features/collaborators/RaffleCollaboratorsSection'
 import { toAppError } from '@/lib/errors'
 import { Alert } from '@/ui/Alert'
 import { Button, ButtonLink } from '@/ui/Button'
@@ -202,15 +203,7 @@ export function RaffleDetailPage() {
           : `Se cerrará el ${formatDate(closingDate(raffle.drawDate))} y se borrará por completo el ${formatDate(deletionDate(raffle.drawDate))}, con todos sus datos.`}
       </Alert>
 
-      {raffle.status === 'draft' && (
-        <Card>
-          <h2 className="text-lg font-semibold">Siguiente paso: colaboradores</h2>
-          <p className="text-muted">
-            Próximamente: agregar de 1 a 12 colaboradores, repartir los 100 números y compartir sus
-            enlaces.
-          </p>
-        </Card>
-      )}
+      <RaffleCollaboratorsSection raffle={raffle} />
 
       <div className="flex flex-col gap-3">
         {actions.edit && (
