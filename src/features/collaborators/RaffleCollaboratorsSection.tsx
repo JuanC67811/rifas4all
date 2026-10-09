@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Board } from '@/features/board/Board'
 import type { Raffle } from '@/features/raffles/api'
 import { toAppError } from '@/lib/errors'
 import { Alert } from '@/ui/Alert'
@@ -11,8 +12,8 @@ import { useCollaborators, useDistribution } from './hooks'
 /**
  * Sección de colaboradores en el detalle de la rifa:
  *   Borrador → 1. editar colaboradores, 2. reparto y activación.
- *   Activa   → compartir y gestionar accesos.
- *   Cerrada  → solo consulta.
+ *   Activa   → tablero de números + compartir y gestionar accesos.
+ *   Cerrada  → tablero y accesos, solo consulta.
  */
 export function RaffleCollaboratorsSection({ raffle }: { raffle: Raffle }) {
   const collaborators = useCollaborators(raffle.id)
@@ -41,11 +42,20 @@ export function RaffleCollaboratorsSection({ raffle }: { raffle: Raffle }) {
   }
 
   return (
-    <AccessesPanel
-      raffleId={raffle.id}
-      collaborators={saved}
-      distribution={distribution.data ?? []}
-      readOnly={raffle.status === 'closed'}
-    />
+    <>
+      <Board
+        raffleId={raffle.id}
+        priceMinor={raffle.priceMinor}
+        currency={raffle.currency}
+        acceptsChanges={raffle.status === 'active'}
+        collaboratorNames={new Map(saved.map((c) => [c.id, c.displayName]))}
+      />
+      <AccessesPanel
+        raffleId={raffle.id}
+        collaborators={saved}
+        distribution={distribution.data ?? []}
+        readOnly={raffle.status === 'closed'}
+      />
+    </>
   )
 }

@@ -7,6 +7,7 @@ import { formatMoney } from '@/domain/money'
 import { RAFFLE_STATUS_LABELS } from '@/domain/raffle'
 import { formatNumberList } from '@/domain/raffle-number'
 import { useAuth } from '@/features/auth/auth-context'
+import { Board } from '@/features/board/Board'
 import { toAppError } from '@/lib/errors'
 import { queryKeys } from '@/lib/query'
 import { Alert } from '@/ui/Alert'
@@ -181,7 +182,7 @@ export function CollaboratorHomePage() {
     )
   }
 
-  const { raffle, me, myNumbers } = home.data
+  const { raffle, me, myNumbers, collaborators } = home.data
 
   return (
     <Page>
@@ -206,9 +207,14 @@ export function CollaboratorHomePage() {
           <dd className="font-medium">{formatDate(raffle.paymentDeadline)}</dd>
         </dl>
       </Card>
-      <p className="text-center text-muted">
-        Próximamente: tablero completo y registro de ventas desde aquí.
-      </p>
+      <Board
+        raffleId={raffle.id}
+        priceMinor={raffle.priceMinor}
+        currency={raffle.currency}
+        acceptsChanges={raffle.status === 'active'}
+        myCollaboratorId={me.id}
+        collaboratorNames={new Map(collaborators.map((c) => [c.id, c.displayName]))}
+      />
     </Page>
   )
 }

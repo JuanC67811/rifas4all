@@ -1,21 +1,5 @@
-import { expect, test, type Page } from '@playwright/test'
-
-// Requiere Supabase local con los datos de ejemplo: `npm run db:start` y `npm run db:reset`.
-const DEMO = { email: 'demo@rifas4all.local', password: 'rifas4all-demo' }
-
-function isoDate(daysFromToday: number) {
-  const date = new Date()
-  date.setDate(date.getDate() + daysFromToday)
-  return date.toISOString().slice(0, 10)
-}
-
-async function login(page: Page) {
-  await page.goto('/entrar')
-  await page.getByLabel('Correo').fill(DEMO.email)
-  await page.getByLabel('Contraseña').fill(DEMO.password)
-  await page.getByRole('button', { name: 'Entrar' }).click()
-  await expect(page.getByRole('heading', { name: 'Mis rifas' })).toBeVisible()
-}
+import { expect, test } from '@playwright/test'
+import { DEMO, isoDate, login } from './helpers.ts'
 
 test('credenciales incorrectas muestran un mensaje claro', async ({ page }) => {
   await page.goto('/entrar')

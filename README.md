@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **5 — Tablero, ventas, pagos y tiempo real**. Ya funcionan la base de datos completa, la cuenta del organizador, la gestión de rifas, el reparto de números y el acceso de colaboradores con enlace y PIN. Ver [plan por fases](#estado-del-proyecto).
+> 🚧 **En desarrollo.** Fase actual: **6 — Vencimientos, recordatorios y resumen diario por correo**. Ya se puede organizar una rifa completa: cuenta, reparto, acceso de colaboradores y registro de ventas y pagos en tiempo real.
 
 ## Cómo funciona
 
@@ -126,6 +126,14 @@ Incluye una rifa activa ("Canasta Navideña", 3 colaboradores, 7 ventas en disti
 
 El token viaja en el fragmento de la URL (`#`), que nunca llega al servidor, y se borra de la barra de direcciones al abrir el enlace. Cinco PIN incorrectos bloquean el acceso 15 minutos. El organizador puede pausar un acceso o generar uno nuevo; ninguna de las dos cosas toca números ni ventas. Detalles y alternativas en el [ADR 0004](docs/adr/0004-acceso-de-colaboradores-sin-cuenta.md).
 
+## Tablero y ventas
+
+- Cuadrícula de 100 números: 5 columnas en el teléfono, 10 en escritorio. Cada botón anuncia número, estado y dueño ("Número 07, Pagado, de Carlos").
+- Filtros rápidos con su cantidad: Todos, Mis números, Disponibles, Reservados, Pendientes, Pagados, Vencidos.
+- Al tocar un número se abre un panel inferior (`<dialog>` nativo: foco atrapado, cierre con Escape) para registrar al comprador, confirmar la compra, marcar pagado, revertir el pago (con motivo) o cancelar.
+- **Tiempo real:** Supabase Realtime avisa de cada cambio del tablero, y el aviso actualiza la celda y vuelve a pedir las ventas, que la base de datos filtra por permisos. Al reconectar se recarga todo.
+- **Concurrencia:** cada acción envía la versión del número que la persona estaba viendo y un identificador de operación. Un doble toque no duplica nada. Si otra persona cambió el número, el panel muestra el estado actual y el aviso "Este número cambió mientras lo editabas".
+
 ## Frontend
 
 | Capa            | Qué contiene                                                       | Ejemplo                                                                                                                |
@@ -158,7 +166,7 @@ Decisiones de accesibilidad aplicadas desde el inicio: etiquetas visibles en tod
 | 2    | Migraciones, restricciones, funciones SQL, Row Level Security, pgTAP | ✅     |
 | 3    | Cuenta del creador y gestión de rifas                                | ✅     |
 | 4    | Colaboradores, reparto de números, enlaces y PIN                     | ✅     |
-| 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ⏳     |
+| 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ✅     |
 | 6    | Vencimientos, recordatorios y resumen diario por correo              | ⏳     |
 | 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ⏳     |
 | 8    | Seguridad, accesibilidad, rendimiento y publicación                  | ⏳     |

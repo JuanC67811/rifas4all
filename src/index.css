@@ -2,8 +2,8 @@
 
 /*
  * Design tokens: colores con nombre semántico. El modo oscuro solo cambia los valores.
- * Los estados de los números (libre, apartado, por pagar, pagado, vencido) se añadirán
- * en la Fase 5, siempre acompañados de texto e icono, nunca solo por color.
+ * Los estados de los números (--color-st-*) siempre van acompañados de texto e icono,
+ * nunca se distinguen solo por el color.
  */
 @theme {
   --color-surface: #ffffff;
@@ -18,6 +18,16 @@
   --color-danger-contrast: #ffffff;
   --color-success: #15803d;
   --color-success-soft: #f0fdf4;
+
+  /* Estados de los números (siempre acompañados de icono y texto). */
+  --color-st-reserved: #b45309;
+  --color-st-reserved-soft: #fffbeb;
+  --color-st-pending: #1d4ed8;
+  --color-st-pending-soft: #eff6ff;
+  --color-st-paid: #15803d;
+  --color-st-paid-soft: #dcfce7;
+  --color-st-overdue: #b91c1c;
+  --color-st-overdue-soft: #fee2e2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +44,14 @@
     --color-danger-contrast: #1f0a0a;
     --color-success: #4ade80;
     --color-success-soft: #14321f;
+    --color-st-reserved: #fbbf24;
+    --color-st-reserved-soft: #3a2a0a;
+    --color-st-pending: #60a5fa;
+    --color-st-pending-soft: #12234a;
+    --color-st-paid: #4ade80;
+    --color-st-paid-soft: #123222;
+    --color-st-overdue: #f87171;
+    --color-st-overdue-soft: #3f1515;
   }
 }
 

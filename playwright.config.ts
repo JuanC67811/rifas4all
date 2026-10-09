@@ -6,6 +6,9 @@ export default defineConfig({
   testDir: './e2e',
   globalSetup: './e2e/global-setup.ts',
   fullyParallel: true,
+  // Como mucho 2 pruebas a la vez: cada una crea una rifa en la cuenta de demo, que ya
+  // tiene 2, y el límite de la cuenta es 5.
+  workers: 2,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? 'github' : 'list',
