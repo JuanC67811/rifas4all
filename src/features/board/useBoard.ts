@@ -70,6 +70,7 @@ export function useLiveBoard(raffleId: string): LiveStatus {
             applyCell(cells, row),
           )
           void queryClient.invalidateQueries({ queryKey: boardKeys.sales(raffleId) })
+          void queryClient.invalidateQueries({ queryKey: ['activity', raffleId] })
         },
       )
       .subscribe((state) => {
@@ -127,6 +128,7 @@ export function useSaleMutation(raffleId: string) {
       queryClient.setQueryData<BoardCell[]>(boardKeys.board(raffleId), (cells) =>
         applyCell(cells, result),
       )
+      void queryClient.invalidateQueries({ queryKey: ['activity', raffleId] })
       return queryClient.invalidateQueries({ queryKey: boardKeys.sales(raffleId) })
     },
     onError: () =>

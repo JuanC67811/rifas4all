@@ -53,7 +53,7 @@ test('la rifa activa no ofrece eliminarse sin cerrarla antes', async ({ page }) 
   await login(page)
   await page.getByRole('link', { name: /Canasta Navideña/ }).click()
 
-  await expect(page.getByRole('heading', { name: 'Colaboradores y accesos' })).toBeVisible()
+  await expect(page.getByRole('tab', { name: 'Tablero' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Cerrar la rifa ahora' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Eliminar la rifa' })).toHaveCount(0)
 })

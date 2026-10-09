@@ -4,7 +4,7 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
-> 🚧 **En desarrollo.** Fase actual: **7 — Panel, registro de actividad y estadísticas**. Ya funcionan el ciclo completo de la rifa, las ventas en tiempo real, los recordatorios de pago y el resumen diario.
+> 🚧 **En desarrollo.** Fase actual: **8 — Seguridad, accesibilidad, rendimiento y publicación**. Todas las funcionalidades del MVP están implementadas y probadas.
 
 ## Cómo funciona
 
@@ -139,6 +139,19 @@ El token viaja en el fragmento de la URL (`#`), que nunca llega al servidor, y s
 - **Por cobrar:** el tablero lista los pagos pendientes con la fecha límite ("Vence en 3 días", "Vence hoy") y, para cada comprador, los botones **Copiar recordatorio** y **Copiar teléfono**. El organizador puede personalizar el mensaje con `{nombre}`, `{numero}`, `{rifa}`, `{fecha}` y `{monto}`. Nada se envía solo.
 - **Resumen diario:** un correo por organizador a medianoche (su zona horaria) con los movimientos del día anterior y los cobros por vencer. Lo envía una Edge Function llamada por `pg_cron`, con reintentos e idempotencia. Mientras no haya dominio de correo, el mismo resumen se lee en la app ("Resumen de ayer"). Detalles en el [ADR 0005](docs/adr/0005-resumen-diario-por-correo.md).
 
+## Panel del organizador
+
+Una rifa activa se organiza en pestañas accesibles (flechas del teclado para moverse):
+
+| Pestaña       | Contenido                                                                                                                              |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Tablero       | Los 100 números en tiempo real, ventas, pagos y "Por cobrar"                                                                           |
+| Resumen       | Días para el sorteo, avance general, dinero recaudado y por cobrar, y avance por lista (en el orden de los colaboradores, sin ranking) |
+| Colaboradores | Compartir accesos, pausar y generar accesos nuevos                                                                                     |
+| Actividad     | El registro inmutable en lenguaje natural ("Carlos vendió el número 07"), paginado por cursor                                          |
+
+El colaborador ve su propia actividad debajo de su tablero.
+
 ## Frontend
 
 | Capa            | Qué contiene                                                       | Ejemplo                                                                                                                |
@@ -173,7 +186,7 @@ Decisiones de accesibilidad aplicadas desde el inicio: etiquetas visibles en tod
 | 4    | Colaboradores, reparto de números, enlaces y PIN                     | ✅     |
 | 5    | Tablero, compradores, estados, concurrencia y tiempo real            | ✅     |
 | 6    | Vencimientos, recordatorios y resumen diario por correo              | ✅     |
-| 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ⏳     |
+| 7    | Panel, log, estadísticas y ciclo de vida de la rifa                  | ✅     |
 | 8    | Seguridad, accesibilidad, rendimiento y publicación                  | ⏳     |
 
 ## Limitaciones conocidas

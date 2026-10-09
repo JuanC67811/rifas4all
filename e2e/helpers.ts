@@ -44,15 +44,17 @@ export async function createActiveRaffle(
   await page.getByRole('button', { name: 'Ver el reparto' }).click()
   await page.getByRole('button', { name: 'Confirmar reparto y activar la rifa' }).click()
   await page.getByRole('button', { name: 'Sí, confirmar y activar' }).click()
-  await expect(page.getByRole('heading', { name: 'Colaboradores y accesos' })).toBeVisible()
+  await expect(page.getByRole('tab', { name: 'Tablero' })).toHaveAttribute('aria-selected', 'true')
 }
 
 /** Copia (lee) el mensaje de acceso de un colaborador y devuelve enlace y PIN. */
 export async function accessFor(page: Page, collaboratorName: string) {
+  await page.getByRole('tab', { name: 'Colaboradores' }).click()
   const card = page.getByRole('article').filter({ hasText: collaboratorName })
   await card.getByRole('button', { name: 'Compartir acceso' }).click()
   const message = await card.getByLabel(`Mensaje para ${collaboratorName}`).inputValue()
   await card.getByRole('button', { name: 'Cerrar' }).click()
+  await page.getByRole('tab', { name: 'Tablero' }).click()
   return {
     url: message.match(/Enlace de acceso: (\S+)/)?.[1] ?? '',
     pin: message.match(/PIN: (\d{4})/)?.[1] ?? null,

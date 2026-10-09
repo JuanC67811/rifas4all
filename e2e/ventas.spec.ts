@@ -92,6 +92,15 @@ test('ventas y pagos en tiempo real entre colaborador y organizadora', async ({
   await expect(other.getByLabel('Nombre del comprador')).toHaveCount(0)
   await other.getByRole('button', { name: 'Cerrar' }).click()
 
+  // El registro de actividad lo cuenta en lenguaje natural.
+  await page.getByRole('tab', { name: 'Actividad' }).click()
+  await expect(page.getByText('Carlos vendió el número 07')).toBeVisible()
+  await expect(page.getByText(/registró el pago del número 07/)).toBeVisible()
+
+  // Resumen: avance por lista sin datos de compradores.
+  await page.getByRole('tab', { name: 'Resumen' }).click()
+  await expect(page.getByRole('rowheader', { name: 'Carlos' })).toBeVisible()
+
   await carlos.context.close()
   await page.reload()
   await closeAndDelete(page, raffleName)

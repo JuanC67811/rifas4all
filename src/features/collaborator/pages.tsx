@@ -6,6 +6,7 @@ import { formatDate } from '@/domain/dates'
 import { formatMoney } from '@/domain/money'
 import { RAFFLE_STATUS_LABELS } from '@/domain/raffle'
 import { formatNumberList } from '@/domain/raffle-number'
+import { ActivityLog } from '@/features/activity/ActivityLog'
 import { useAuth } from '@/features/auth/auth-context'
 import { Board } from '@/features/board/Board'
 import { toAppError } from '@/lib/errors'
@@ -217,6 +218,11 @@ export function CollaboratorHomePage() {
         reminderTemplate={raffle.reminderTemplate}
         acceptsChanges={raffle.status === 'active'}
         myCollaboratorId={me.id}
+        collaboratorNames={new Map(collaborators.map((c) => [c.id, c.displayName]))}
+      />
+      <ActivityLog
+        raffleId={raffle.id}
+        title="Tu actividad"
         collaboratorNames={new Map(collaborators.map((c) => [c.id, c.displayName]))}
       />
     </Page>

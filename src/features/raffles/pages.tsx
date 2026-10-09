@@ -11,6 +11,7 @@ import {
 } from '@/domain/raffle'
 import { DigestCard } from '@/features/account/DigestCard'
 import { RaffleCollaboratorsSection } from '@/features/collaborators/RaffleCollaboratorsSection'
+import { RaffleDashboard } from '@/features/dashboard/RaffleDashboard'
 import { toAppError } from '@/lib/errors'
 import { Alert } from '@/ui/Alert'
 import { Button, ButtonLink } from '@/ui/Button'
@@ -206,7 +207,11 @@ export function RaffleDetailPage() {
           : `Se cerrará el ${formatDate(closingDate(raffle.drawDate))} y se borrará por completo el ${formatDate(deletionDate(raffle.drawDate))}, con todos sus datos.`}
       </Alert>
 
-      <RaffleCollaboratorsSection raffle={raffle} />
+      {raffle.status === 'draft' ? (
+        <RaffleCollaboratorsSection raffle={raffle} />
+      ) : (
+        <RaffleDashboard raffle={raffle} />
+      )}
 
       <div className="flex flex-col gap-3">
         {actions.edit && (
