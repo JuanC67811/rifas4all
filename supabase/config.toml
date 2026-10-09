@@ -419,3 +419,29 @@ enabled = true
 # no con el JWT de un usuario.
 [functions.send-digests]
 verify_jwt = false
+
+# -----------------------------------------------------------------------------
+# Producción. `npx supabase config push` aplica esta configuración al proyecto
+# enlazado; solo se sobrescriben los valores indicados aquí.
+# -----------------------------------------------------------------------------
+[remotes.produccion]
+project_id = "jbaapnhfcvlodsyqgduj"
+
+[remotes.produccion.auth]
+site_url = "https://rifas4all.rifas4all.workers.dev"
+additional_redirect_urls = ["https://rifas4all.rifas4all.workers.dev/**"]
+
+[remotes.produccion.auth.email]
+# En producción hay que confirmar el correo antes de entrar.
+enable_confirmations = true
+# Valores más estrictos que los de desarrollo local (los del proyecto en la nube).
+max_frequency = "1m0s"
+otp_length = 8
+
+[remotes.produccion.auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[remotes.produccion.auth.rate_limit]
+# Inicios de sesión anónimos (colaboradores) por hora y por IP.
+anonymous_users = 30

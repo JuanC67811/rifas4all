@@ -1,0 +1,16 @@
+// Publicación en Cloudflare (Workers con archivos estáticos): solo se sirve `dist`.
+// Sin código de servidor: la SPA habla directamente con Supabase.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rifas4all",
+  "compatibility_date": "2026-10-06",
+  // Dirección pública: https://rifas4all.rifas4all.workers.dev
+  "workers_dev": true,
+  // Sin URLs de vista previa por versión: solo existe la versión publicada.
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    // Rutas como /rifas o /i las resuelve React Router: se responde con index.html.
+    "not_found_handling": "single-page-application",
+  },
+}

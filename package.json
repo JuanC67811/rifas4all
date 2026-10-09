@@ -25,7 +25,8 @@
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
     "db:types": "supabase gen types typescript --local --schema public > src/lib/database.types.ts && prettier --write src/lib/database.types.ts",
-    "screenshots": "playwright test -c playwright.capturas.config.ts"
+    "screenshots": "playwright test -c playwright.capturas.config.ts",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",
@@ -55,6 +56,7 @@
     "supabase": "^2.120.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.4",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "wrangler": "^4.149.0"
   }
 }

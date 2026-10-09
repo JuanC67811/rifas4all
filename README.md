@@ -4,6 +4,8 @@
 
 Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 100 números** (familiares, escolares, de barrio) entre una persona organizadora y hasta 12 colaboradores que **no necesitan registrarse**.
 
+**[Abrir la app →](https://rifas4all.rifas4all.workers.dev)** · publicada en Cloudflare con Supabase en la nube.
+
 | Tablero en vivo                                                                                 | Registrar un comprador                                                                               | Lista del colaborador                                                                 | Modo oscuro                                                    |
 | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | ![Tablero del organizador con los 100 números, totales y filtros](docs/screenshots/tablero.png) | ![Panel inferior del número 07 con el comprador y las acciones de pago](docs/screenshots/numero.png) | ![Vista del colaborador con sus números resaltados](docs/screenshots/colaborador.png) | ![Tablero en modo oscuro](docs/screenshots/tablero-oscuro.png) |
@@ -140,7 +142,7 @@ npm run dev
 
 ## Estado
 
-Las 8 fases del plan están completas: el MVP está implementado y probado. Falta la **publicación**, que requiere crear las cuentas de Supabase, el hosting y, para el correo, un dominio propio. Los pasos están en [docs/despliegue.md](docs/despliegue.md).
+Las 8 fases del plan están completas y la app está **publicada**: el frontend en Cloudflare y la base de datos en Supabase, con las 12 migraciones aplicadas. Falta activar el correo con un dominio propio; hasta entonces, el registro solo funciona para la cuenta dueña del proyecto. Detalles en [docs/despliegue.md](docs/despliegue.md).
 
 ## Limitaciones conocidas
 
