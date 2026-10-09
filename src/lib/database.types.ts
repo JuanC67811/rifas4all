@@ -458,7 +458,25 @@ export type Database = {
         }
         Returns: Json
       }
+      claim_daily_digests: {
+        Args: { p_limit?: number }
+        Returns: {
+          digest_date: string
+          email: string
+          user_id: string
+        }[]
+      }
       close_raffle: { Args: { p_raffle_id: string }; Returns: undefined }
+      complete_daily_digest: {
+        Args: {
+          p_date: string
+          p_error?: string
+          p_outcome: string
+          p_provider_message_id?: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       confirm_distribution: { Args: { p_raffle_id: string }; Returns: undefined }
       create_raffle: {
         Args: {
@@ -478,8 +496,10 @@ export type Database = {
         Args: { p_confirmation_name: string; p_raffle_id: string }
         Returns: undefined
       }
+      digest_content_for: { Args: { p_date: string; p_user_id: string }; Returns: Json }
       get_access_credentials: { Args: { p_collaborator_id: string }; Returns: Json }
       get_collaborator_home: { Args: { p_raffle_id: string }; Returns: Json }
+      get_daily_digest: { Args: { p_date: string }; Returns: Json }
       get_distribution_summary: { Args: { p_raffle_id: string }; Returns: Json }
       get_invitation_preview: { Args: { p_token: string }; Returns: Json }
       preview_distribution: {

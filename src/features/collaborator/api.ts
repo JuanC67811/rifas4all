@@ -83,6 +83,7 @@ export type CollaboratorHome = {
     timeZone: string
     priceMinor: number
     currency: Currency
+    reminderTemplate: string | null
   }
   me: { id: string; displayName: string; position: number }
   collaborators: { id: string; displayName: string }[]
@@ -100,6 +101,7 @@ type HomeResponse = {
     time_zone: string
     price_minor: number
     currency: Currency
+    reminder_template: string | null
   }
   me: { id: string; display_name: string; position: number }
   collaborators: { id: string; display_name: string }[]
@@ -131,6 +133,7 @@ export async function getCollaboratorHome(raffleId: string): Promise<Collaborato
       timeZone: home.raffle.time_zone,
       priceMinor: home.raffle.price_minor,
       currency: home.raffle.currency,
+      reminderTemplate: home.raffle.reminder_template,
     },
     me: { id: home.me.id, displayName: home.me.display_name, position: home.me.position },
     collaborators: home.collaborators.map((c) => ({ id: c.id, displayName: c.display_name })),

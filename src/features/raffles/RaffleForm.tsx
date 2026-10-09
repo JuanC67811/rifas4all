@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from 'react'
 import { flushSync } from 'react-dom'
 import { todayIn } from '@/domain/dates'
 import { CURRENCIES, CURRENCY_LABELS } from '@/domain/money'
+import { DEFAULT_REMINDER_TEMPLATE, REMINDER_VARIABLES } from '@/domain/reminder'
 import {
   validateRaffleForm,
   type FieldErrors,
@@ -124,6 +125,16 @@ export function RaffleForm({
         onChange={(e) => update('paymentDeadline', e.target.value)}
         error={errors.paymentDeadline}
         hint="Hasta cuándo pueden pagar los compradores. No puede ser después del sorteo."
+      />
+      <TextAreaField
+        label="Mensaje de recordatorio de pago (opcional)"
+        hint={`Se copia para enviarlo a quien no ha pagado. Variables: ${REMINDER_VARIABLES.join(' ')}. Si lo dejas vacío se usa el mensaje por defecto.`}
+        placeholder={DEFAULT_REMINDER_TEMPLATE}
+        maxLength={500}
+        rows={4}
+        value={values.reminderTemplate}
+        onChange={(e) => update('reminderTemplate', e.target.value)}
+        error={errors.reminderTemplate}
       />
       <p className="text-sm text-muted">Zona horaria: {timeZone}</p>
 

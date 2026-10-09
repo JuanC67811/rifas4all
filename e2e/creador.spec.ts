@@ -57,3 +57,12 @@ test('la rifa activa no ofrece eliminarse sin cerrarla antes', async ({ page }) 
   await expect(page.getByRole('button', { name: 'Cerrar la rifa ahora' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Eliminar la rifa' })).toHaveCount(0)
 })
+
+test('la organizadora configura su nombre y el resumen diario', async ({ page }) => {
+  await login(page)
+  await page.getByRole('link', { name: 'Cuenta' }).click()
+  await page.getByLabel('Tu nombre (opcional)').fill('Juan')
+  await page.getByLabel('Incluir los teléfonos de los compradores en el correo').check()
+  await page.getByRole('button', { name: 'Guardar' }).click()
+  await expect(page.getByText('Cambios guardados.')).toBeVisible()
+})

@@ -45,8 +45,12 @@ export function RaffleCollaboratorsSection({ raffle }: { raffle: Raffle }) {
     <>
       <Board
         raffleId={raffle.id}
+        raffleName={raffle.name}
         priceMinor={raffle.priceMinor}
         currency={raffle.currency}
+        paymentDeadline={raffle.paymentDeadline}
+        timeZone={raffle.timeZone}
+        reminderTemplate={raffle.reminderTemplate}
         acceptsChanges={raffle.status === 'active'}
         collaboratorNames={new Map(saved.map((c) => [c.id, c.displayName]))}
       />

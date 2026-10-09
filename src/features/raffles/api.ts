@@ -18,13 +18,14 @@ export type Raffle = {
   paymentDeadline: string
   timeZone: string
   distributionMethod: DistributionMethod | null
+  reminderTemplate: string | null
   createdAt: string
 }
 
 export type DistributionMethod = 'ordered' | 'random'
 
 const COLUMNS =
-  'id, name, description, status, price_minor, currency, draw_date, payment_deadline, time_zone, distribution_method, created_at'
+  'id, name, description, status, price_minor, currency, draw_date, payment_deadline, time_zone, distribution_method, reminder_template, created_at'
 
 type RaffleRow = {
   id: string
@@ -37,6 +38,7 @@ type RaffleRow = {
   payment_deadline: string
   time_zone: string
   distribution_method: DistributionMethod | null
+  reminder_template: string | null
   created_at: string
 }
 
@@ -52,6 +54,7 @@ function toRaffle(row: RaffleRow): Raffle {
     paymentDeadline: row.payment_deadline,
     timeZone: row.time_zone,
     distributionMethod: row.distribution_method,
+    reminderTemplate: row.reminder_template,
     createdAt: row.created_at,
   }
 }
@@ -79,6 +82,7 @@ export async function createRaffle(input: RaffleInput, timeZone: string): Promis
       p_draw_date: input.drawDate,
       p_payment_deadline: input.paymentDeadline,
       p_time_zone: timeZone,
+      p_reminder_template: input.reminderTemplate ?? undefined,
     }),
   )
   if (!id) throw new AppError('UNKNOWN')
@@ -93,6 +97,9 @@ export function raffleChanges(original: Raffle, input: RaffleInput): Record<stri
   if (input.priceMinor !== original.priceMinor) changes.price_minor = input.priceMinor
   if (input.currency !== original.currency) changes.currency = input.currency
   if (input.drawDate !== original.drawDate) changes.draw_date = input.drawDate
+  if (input.reminderTemplate !== original.reminderTemplate) {
+    changes.reminder_template = input.reminderTemplate ?? ''
+  }
   if (input.paymentDeadline !== original.paymentDeadline) {
     changes.payment_deadline = input.paymentDeadline
   }

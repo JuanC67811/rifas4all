@@ -10,6 +10,7 @@ const EMPTY: RaffleFormValues = {
   currency: 'CRC',
   drawDate: '',
   paymentDeadline: '',
+  reminderTemplate: '',
 }
 
 function renderForm(onSubmit = vi.fn<(input: RaffleInput) => void>(), initialValues = EMPTY) {
@@ -58,6 +59,7 @@ describe('RaffleForm', () => {
       currency: 'CRC',
       drawDate: '2099-12-20',
       paymentDeadline: '2099-12-18',
+      reminderTemplate: null,
     })
   })
 

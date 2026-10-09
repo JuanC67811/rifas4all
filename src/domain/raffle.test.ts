@@ -16,6 +16,7 @@ const valid: RaffleFormValues = {
   currency: 'CRC',
   drawDate: '2026-12-20',
   paymentDeadline: '2026-12-18',
+  reminderTemplate: '',
 }
 
 describe('validateRaffleForm', () => {
@@ -29,6 +30,7 @@ describe('validateRaffleForm', () => {
         currency: 'CRC',
         drawDate: '2026-12-20',
         paymentDeadline: '2026-12-18',
+        reminderTemplate: null,
       },
     })
   })

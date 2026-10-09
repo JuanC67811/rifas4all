@@ -9,12 +9,17 @@ import { Card, Loading } from '@/ui/layout'
 import { BoardFilters } from './BoardFilters'
 import { NumberGrid, StatusLegend } from './NumberGrid'
 import { NumberSheet } from './NumberSheet'
+import { ToCollect } from './ToCollect'
 import { useBoard, useLiveBoard, useSales, type LiveStatus } from './useBoard'
 
 type Props = {
   raffleId: string
+  raffleName: string
   priceMinor: number
   currency: Currency
+  paymentDeadline: string
+  timeZone: string
+  reminderTemplate: string | null
   /** La rifa acepta cambios (activa). Cerrada: solo consulta. */
   acceptsChanges: boolean
   /** Colaborador que mira; sin valor, es el organizador (puede editar todo). */
@@ -31,8 +36,12 @@ const LIVE_LABELS: Record<LiveStatus, { icon: string; text: string }> = {
 
 export function Board({
   raffleId,
+  raffleName,
   priceMinor,
   currency,
+  paymentDeadline,
+  timeZone,
+  reminderTemplate,
   acceptsChanges,
   myCollaboratorId,
   collaboratorNames,
@@ -106,6 +115,18 @@ export function Board({
         onSelect={setSelected}
       />
       <StatusLegend />
+
+      {acceptsChanges && (
+        <ToCollect
+          sales={(sales.data ?? []).filter((sale) => isMine(sale.collaboratorId))}
+          raffleName={raffleName}
+          paymentDeadline={paymentDeadline}
+          timeZone={timeZone}
+          reminderTemplate={reminderTemplate}
+          currency={currency}
+          ownerName={isCollaborator ? () => null : ownerName}
+        />
+      )}
 
       <BottomSheet
         open={selectedCell !== undefined}

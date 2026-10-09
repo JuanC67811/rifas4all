@@ -14,7 +14,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'supabase/functions/_shared/**/*.test.ts'],
     // Los tests no deben depender de un .env local: se usan valores de prueba.
     env: {
       VITE_SUPABASE_URL: 'http://127.0.0.1:54321',

@@ -45,6 +45,10 @@ test('ventas y pagos en tiempo real entre colaborador y organizadora', async ({
   await expect(sheet.getByText('Ana Mora')).toBeVisible()
   await sheet.getByRole('button', { name: 'Cerrar' }).click()
 
+  // El cobro pendiente aparece con su recordatorio listo para copiar.
+  await expect(carlos.page.getByRole('heading', { name: /Por cobrar \(1\)/ })).toBeVisible()
+  await expect(carlos.page.getByRole('button', { name: 'Copiar recordatorio' })).toBeVisible()
+
   // La organizadora lo ve sin recargar (tiempo real).
   await expect(
     page.getByRole('button', { name: 'Número 07, Pendiente de pago, de Carlos' }),

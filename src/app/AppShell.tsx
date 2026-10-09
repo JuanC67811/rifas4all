@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet, useNavigate } from 'react-router'
+import { Link, Outlet, useNavigate } from 'react-router'
 import { signOut } from '@/features/auth/api'
 import { useAuth } from '@/features/auth/auth-context'
 import { Brand } from '@/ui/layout'
@@ -39,6 +39,12 @@ export function AppShell() {
               <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">
                 {session.user.email}
               </span>
+              <Link
+                to="/cuenta"
+                className="flex min-h-11 items-center rounded-lg px-3 font-medium text-brand hover:bg-surface-muted"
+              >
+                Cuenta
+              </Link>
               <button
                 type="button"
                 onClick={handleSignOut}

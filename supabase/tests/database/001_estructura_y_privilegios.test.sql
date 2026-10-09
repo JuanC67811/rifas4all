@@ -94,6 +94,7 @@ select set_eq(
     -- RPC: lectura
     'public.get_collaborator_home(uuid)',
     'public.get_distribution_summary(uuid)',
+    'public.get_daily_digest(date)',
     'public.get_invitation_preview(text)',
     -- RPC: creador (fase 2.3)
     'public.update_profile(text, text, boolean, boolean)',

@@ -47,6 +47,7 @@ export type RaffleFormValues = {
   currency: Currency
   drawDate: string
   paymentDeadline: string
+  reminderTemplate: string
 }
 
 export type RaffleInput = {
@@ -56,6 +57,7 @@ export type RaffleInput = {
   currency: Currency
   drawDate: IsoDate
   paymentDeadline: IsoDate
+  reminderTemplate: string | null
 }
 
 /**
@@ -95,6 +97,10 @@ export function raffleFormSchema(
           (value) => value >= today || value === unchanged.paymentDeadline,
           'La fecha límite no puede estar en el pasado.',
         ),
+      reminderTemplate: z
+        .string()
+        .trim()
+        .max(500, 'La plantilla admite como máximo 500 caracteres.'),
     })
     .refine((values) => values.paymentDeadline <= values.drawDate, {
       path: ['paymentDeadline'],
@@ -107,6 +113,7 @@ export function raffleFormSchema(
       currency: values.currency,
       drawDate: values.drawDate,
       paymentDeadline: values.paymentDeadline,
+      reminderTemplate: values.reminderTemplate === '' ? null : values.reminderTemplate,
     }))
 }
 

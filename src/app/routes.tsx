@@ -12,6 +12,7 @@ import {
   RaffleDetailPage,
   RafflesPage,
 } from '@/features/raffles/pages'
+import { AccountPage } from '@/features/account/AccountPage'
 import { CollaboratorHomePage, InvitationPage } from '@/features/collaborator/pages'
 import { AppShell } from './AppShell'
 import { HomePage, NotFoundPage } from './HomePage'
@@ -42,6 +43,7 @@ export const routes: RouteObject[] = [
           { path: 'rifas/nueva', element: <NewRafflePage /> },
           { path: 'rifas/:raffleId', element: <RaffleDetailPage /> },
           { path: 'rifas/:raffleId/editar', element: <EditRafflePage /> },
+          { path: 'cuenta', element: <AccountPage /> },
         ],
       },
       { path: 'i', element: <InvitationPage /> },

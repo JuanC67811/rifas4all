@@ -209,8 +209,12 @@ export function CollaboratorHomePage() {
       </Card>
       <Board
         raffleId={raffle.id}
+        raffleName={raffle.name}
         priceMinor={raffle.priceMinor}
         currency={raffle.currency}
+        paymentDeadline={raffle.paymentDeadline}
+        timeZone={raffle.timeZone}
+        reminderTemplate={raffle.reminderTemplate}
         acceptsChanges={raffle.status === 'active'}
         myCollaboratorId={me.id}
         collaboratorNames={new Map(collaborators.map((c) => [c.id, c.displayName]))}

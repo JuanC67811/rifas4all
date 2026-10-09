@@ -414,3 +414,8 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Envío del resumen diario: la llama pg_cron con un secreto propio (x-digest-secret),
+# no con el JWT de un usuario.
+[functions.send-digests]
+verify_jwt = false

@@ -9,6 +9,7 @@ import {
   MAX_RAFFLES_PER_ACCOUNT,
   type RaffleFormValues,
 } from '@/domain/raffle'
+import { DigestCard } from '@/features/account/DigestCard'
 import { RaffleCollaboratorsSection } from '@/features/collaborators/RaffleCollaboratorsSection'
 import { toAppError } from '@/lib/errors'
 import { Alert } from '@/ui/Alert'
@@ -51,6 +52,7 @@ export function RafflesPage() {
         subtitle={`${count} de ${MAX_RAFFLES_PER_ACCOUNT} rifas en tu cuenta`}
       />
       {error && <Alert tone="error">{errorMessage(error)}</Alert>}
+      <DigestCard />
 
       {atLimit ? (
         <Alert tone="info">
@@ -111,6 +113,7 @@ const EMPTY_FORM: RaffleFormValues = {
   currency: 'CRC',
   drawDate: '',
   paymentDeadline: '',
+  reminderTemplate: '',
 }
 
 export function NewRafflePage() {
@@ -353,6 +356,7 @@ function EditRaffleForm({ raffle }: { raffle: Raffle }) {
             currency: raffle.currency,
             drawDate: raffle.drawDate,
             paymentDeadline: raffle.paymentDeadline,
+            reminderTemplate: raffle.reminderTemplate ?? '',
           }}
           timeZone={raffle.timeZone}
           submitLabel="Guardar cambios"
