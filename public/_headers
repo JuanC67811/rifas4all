@@ -1,0 +1,14 @@
+# Cabeceras de seguridad (formato de Netlify y Cloudflare Pages).
+# CSP estricta: solo scripts y estilos propios (el build no genera código en línea),
+# y conexiones únicamente a Supabase. Ninguna página puede mostrarse dentro de un iframe.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Los archivos con hash en el nombre no cambian nunca: caché larga.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

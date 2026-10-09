@@ -1,12 +1,25 @@
 /// <reference types="vitest/config" />
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // `npm run preview` sirve el build con la misma CSP que producción (public/_headers),
+  // para detectar a tiempo cualquier recurso que la política bloquee.
+  preview: {
+    headers: {
+      'Content-Security-Policy':
+        readFileSync('public/_headers', 'utf8')
+          .match(/Content-Security-Policy: (.+)/)?.[1]
+          // En local, Supabase corre en 127.0.0.1 y no en *.supabase.co.
+          ?.replace('connect-src ', 'connect-src http://127.0.0.1:54321 ws://127.0.0.1:54321 ') ??
+        '',
+    },
+  },
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },

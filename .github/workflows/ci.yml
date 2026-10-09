@@ -1,7 +1,7 @@
 # En cada push a main y en cada pull request:
 #  - check: lint, formato, tipos, tests del frontend y compilación.
 #  - database: aplica las migraciones en un PostgreSQL de Supabase y ejecuta las pruebas pgTAP.
-# Las pruebas end-to-end se añadirán a la CI en la fase 8.
+#  - e2e: levanta Supabase completo (con datos de ejemplo) y ejecuta Playwright.
 name: CI
 
 on:
@@ -45,4 +45,36 @@ jobs:
           version: 2.120.0
       # Solo el contenedor de PostgreSQL: aplica todas las migraciones desde cero.
       - run: supabase db start
+      - run: supabase db lint --fail-on warning
       - run: supabase test db
+
+  e2e:
+    needs: [check, database]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.120.0
+      - run: npm ci
+      # Supabase sin los servicios que la app no usa (más rápido).
+      - run: supabase start -x studio,imgproxy,storage-api,logflare,vector,edge-runtime
+      - name: Variables de entorno de la app apuntando a Supabase local
+        run: |
+          eval "$(supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY)=')"
+          printf 'VITE_SUPABASE_URL=%s\nVITE_SUPABASE_PUBLISHABLE_KEY=%s\n' "$API_URL" "$PUBLISHABLE_KEY" > .env.local
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
