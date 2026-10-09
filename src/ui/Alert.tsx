@@ -19,7 +19,7 @@ export function Alert({ tone = 'info', children }: { tone?: Tone; children: Reac
   return (
     <div
       role={tone === 'error' ? 'alert' : 'status'}
-      className={`flex gap-3 rounded-xl border-l-4 px-4 py-3 ${TONES[tone]}`}
+      className={`flex gap-3 rounded-[10px] border-l-4 px-4 py-3 ${TONES[tone]}`}
     >
       <span aria-hidden="true" className="font-bold">
         {ICONS[tone]}

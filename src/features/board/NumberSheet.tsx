@@ -195,7 +195,7 @@ export function NumberSheet({
 
 function BuyerDetails({ sale }: { sale: Sale }) {
   return (
-    <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 rounded-xl bg-surface-muted p-3">
+    <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 rounded-card bg-surface-muted p-3">
       <dt className="text-muted">Comprador</dt>
       <dd className="font-semibold">
         {sale.buyerName}
@@ -258,7 +258,7 @@ function ConfirmAction({
 
   return (
     <form
-      className="flex flex-col gap-3 rounded-xl border border-border p-3"
+      className="flex flex-col gap-3 rounded-card ring-1 ring-hairline p-3"
       onSubmit={handleSubmit}
     >
       <p className="font-semibold">¿{statusLabel}?</p>

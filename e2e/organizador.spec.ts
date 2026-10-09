@@ -36,7 +36,7 @@ test('la organizadora vende junto a un colaborador: 50 y 50', async ({ page }, t
   await page.getByRole('dialog').getByRole('button', { name: 'Cerrar' }).click()
 
   // Su lista no necesita enlace; la de Carlos sí.
-  await page.getByRole('tab', { name: 'Colaboradores' }).click()
+  await page.getByRole('tab', { name: 'Accesos' }).click()
   await expect(page.getByText(/No necesita enlace: entras con tu cuenta/)).toBeVisible()
   await expect(page.getByRole('button', { name: 'Compartir acceso' })).toHaveCount(1)
 

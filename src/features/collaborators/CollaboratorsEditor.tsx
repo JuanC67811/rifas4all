@@ -79,7 +79,7 @@ export function CollaboratorsEditor({ raffleId, saved, onDirtyChange }: Props) {
         {save.error && <Alert tone="error">{toAppError(save.error).message}</Alert>}
         {formError && <Alert tone="error">{formError}</Alert>}
 
-        <div className="grid grid-cols-[auto_1fr] gap-x-3 rounded-xl border border-border p-3">
+        <div className="grid grid-cols-[auto_1fr] gap-x-3 rounded-card ring-1 ring-hairline p-3">
           <input
             id="organizador-vende"
             type="checkbox"
@@ -107,13 +107,13 @@ export function CollaboratorsEditor({ raffleId, saved, onDirtyChange }: Props) {
 
         <ol className="flex flex-col gap-3">
           {rows.map((row, index) => (
-            <li key={row.key} className="flex flex-col gap-3 rounded-xl bg-surface-muted p-3">
+            <li key={row.key} className="flex flex-col gap-3 rounded-card bg-surface-muted p-3">
               <div className="flex items-center justify-between">
                 <span className="font-semibold">Colaborador {index + 1}</span>
                 {(rows.length > 1 || organizerSells) && (
                   <button
                     type="button"
-                    className="min-h-11 rounded-lg px-3 text-danger hover:bg-surface"
+                    className="min-h-11 rounded-full px-4 font-semibold text-danger hover:bg-surface"
                     aria-label={`Quitar al colaborador ${index + 1}${row.displayName ? ` (${row.displayName})` : ''}`}
                     onClick={() => change(rows.filter((other) => other.key !== row.key))}
                   >

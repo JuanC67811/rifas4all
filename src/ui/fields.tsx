@@ -11,10 +11,11 @@ import {
  * error enlazados con aria-describedby, y aria-invalid cuando hay error.
  * Texto de 16 px para que iOS no haga zoom al enfocar.
  */
+// Campos estilo Wise: radio de 10 px, borde Pebble y foco en verde bosque.
 const CONTROL =
-  'block w-full min-h-12 rounded-xl border border-border bg-surface px-4 text-base text-text ' +
+  'block w-full min-h-12 rounded-[10px] border border-input-border bg-surface px-4 text-base text-text ' +
   'placeholder:text-muted focus:border-brand focus:outline-2 focus:outline-brand ' +
-  'aria-invalid:border-danger disabled:bg-surface-muted disabled:text-muted'
+  'aria-invalid:border-danger aria-invalid:border-2 disabled:bg-surface-muted disabled:text-muted'
 
 type FieldShellProps = {
   id: string
@@ -31,7 +32,7 @@ function FieldShell({ id, label, hint, error, children }: FieldShellProps) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-medium">
+      <label htmlFor={id} className="font-semibold">
         {label}
       </label>
       {children(describedBy)}

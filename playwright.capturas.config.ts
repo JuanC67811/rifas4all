@@ -7,6 +7,7 @@ export default defineConfig({
   globalSetup: './e2e/global-setup.ts',
   workers: 1,
   reporter: 'list',
-  use: { ...devices['Pixel 7'], baseURL: 'http://localhost:5173' },
+  // Movimiento reducido: la captura muestra el estado final, no la animación de entrada.
+  use: { ...devices['Pixel 7'], baseURL: 'http://localhost:5173', reducedMotion: 'reduce' },
   webServer: { command: 'npm run dev', url: 'http://localhost:5173', reuseExistingServer: true },
 })

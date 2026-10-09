@@ -61,7 +61,7 @@ export function ToCollect({
           })
           const owner = ownerName(sale.collaboratorId)
           return (
-            <li key={sale.id} className="flex flex-col gap-2 rounded-xl bg-surface-muted p-3">
+            <li key={sale.id} className="flex flex-col gap-2 rounded-card bg-surface-muted p-3">
               <p>
                 <span className="font-bold tabular-nums">{formatRaffleNumber(sale.number)}</span> ·{' '}
                 {sale.buyerName}

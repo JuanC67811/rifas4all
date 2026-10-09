@@ -57,7 +57,7 @@ export function NumberGrid({
               title={label}
               onClick={() => onSelect(cell.number)}
               className={[
-                'relative flex aspect-square w-full flex-col items-center justify-center rounded-xl border-2',
+                'relative flex aspect-square w-full flex-col items-center justify-center rounded-[10px] border-2',
                 'text-lg font-bold tabular-nums transition focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand',
                 CELL_STYLES[cell.status],
                 mine ? 'ring-2 ring-brand ring-offset-2 ring-offset-surface' : '',

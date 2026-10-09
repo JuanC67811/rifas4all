@@ -57,12 +57,12 @@ export function StatsPanel({
             ['Reservados', counts.reserved],
             ['Disponibles', counts.available],
           ].map(([label, value]) => (
-            <div key={label} className="rounded-xl bg-surface-muted p-3">
+            <div key={label} className="rounded-card bg-surface-muted p-3">
               <dt className="text-sm text-muted">{label}</dt>
               <dd className="text-xl font-bold tabular-nums">{value}</dd>
             </div>
           ))}
-          <div className="rounded-xl bg-surface-muted p-3">
+          <div className="rounded-card bg-surface-muted p-3">
             <dt className="text-sm text-muted">Recaudado</dt>
             <dd className="text-xl font-bold">
               {formatMoney(counts.paid * raffle.priceMinor, raffle.currency)}

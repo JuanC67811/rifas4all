@@ -18,7 +18,7 @@ export function DigestCard() {
   const { text } = formatDigest(digest.data)
 
   return (
-    <details className="rounded-2xl border border-border bg-surface p-4">
+    <details className="rounded-card ring-1 ring-hairline bg-surface p-4">
       <summary className="min-h-11 cursor-pointer font-semibold">Resumen de ayer</summary>
       <p className="mt-2 whitespace-pre-wrap break-words text-sm">{text}</p>
     </details>

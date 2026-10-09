@@ -53,7 +53,7 @@ export function AccessesPanel({
         {collaborators.map((collaborator) => (
           <li key={collaborator.id}>
             {collaborator.isOrganizer ? (
-              <article className="flex flex-col gap-1 rounded-xl bg-surface-muted p-3">
+              <article className="flex flex-col gap-1 rounded-card bg-surface-muted p-3">
                 <h3 className="font-semibold">{collaborator.displayName} (tú)</h3>
                 <p className="text-sm text-muted">
                   Tu propia lista:{' '}
@@ -108,7 +108,7 @@ function CollaboratorAccess({
   }
 
   return (
-    <article className="flex flex-col gap-3 rounded-xl bg-surface-muted p-3">
+    <article className="flex flex-col gap-3 rounded-card bg-surface-muted p-3">
       <header>
         <h3 className="font-semibold">{collaborator.displayName}</h3>
         <p className="text-sm text-muted">
@@ -157,7 +157,7 @@ function CollaboratorAccess({
       )}
 
       {panel === 'regenerate' && (
-        <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3">
+        <div className="flex flex-col gap-3 rounded-card ring-1 ring-hairline bg-surface p-3">
           <p>
             Úsalo si {collaborator.displayName} perdió el teléfono o el enlace llegó a otra persona.
             El enlace y el PIN actuales dejarán de funcionar y se cerrará su sesión en todos los
@@ -203,13 +203,13 @@ function SharePanel({
   })
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3">
+    <div className="flex flex-col gap-3 rounded-card ring-1 ring-hairline bg-surface p-3">
       <label className="flex flex-col gap-1.5">
         <span className="font-medium">Mensaje para {credentials.displayName}</span>
         <textarea
           readOnly
           rows={8}
-          className="w-full rounded-xl border border-border bg-surface-muted p-3 text-base"
+          className="w-full rounded-card ring-1 ring-hairline bg-surface-muted p-3 text-base"
           value={message}
           onFocus={(e) => e.currentTarget.select()}
         />

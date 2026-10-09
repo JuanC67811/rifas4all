@@ -27,7 +27,7 @@ test('capturas del organizador', async ({ page }) => {
   await page.getByRole('tab', { name: 'Resumen' }).click()
   await page.screenshot({ path: `${DIR}/resumen.png` })
 
-  await page.getByRole('tab', { name: 'Colaboradores' }).click()
+  await page.getByRole('tab', { name: 'Accesos' }).click()
   await page
     .getByRole('article')
     .filter({ hasText: 'María' })

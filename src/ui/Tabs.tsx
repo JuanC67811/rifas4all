@@ -35,7 +35,7 @@ export function Tabs({ label, items }: { label: string; items: TabItem[] }) {
       <div
         role="tablist"
         aria-label={label}
-        className="-mx-4 flex gap-1 overflow-x-auto border-b border-border px-4"
+        className="flex gap-1 overflow-x-auto rounded-full bg-surface-muted p-1 ring-1 ring-hairline"
       >
         {items.map((item, index) => {
           const selected = item.id === current?.id
@@ -54,11 +54,9 @@ export function Tabs({ label, items }: { label: string; items: TabItem[] }) {
               onClick={() => setActive(item.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
               className={[
-                'min-h-12 whitespace-nowrap border-b-3 px-4 font-semibold transition',
-                'focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-brand',
-                selected
-                  ? 'border-brand text-brand'
-                  : 'border-transparent text-muted hover:text-text',
+                'min-h-11 flex-1 whitespace-nowrap rounded-full px-3 text-[15px] font-semibold transition',
+                'focus-visible:outline-3 focus-visible:outline-offset-1 focus-visible:outline-brand',
+                selected ? 'bg-cta text-cta-ink' : 'text-body hover:bg-surface hover:text-text',
               ].join(' ')}
             >
               {item.label}

@@ -51,7 +51,7 @@ export async function createActiveRaffle(
 
 /** Copia (lee) el mensaje de acceso de un colaborador y devuelve enlace y PIN. */
 export async function accessFor(page: Page, collaboratorName: string) {
-  await page.getByRole('tab', { name: 'Colaboradores' }).click()
+  await page.getByRole('tab', { name: 'Accesos' }).click()
   const card = page.getByRole('article').filter({ hasText: collaboratorName })
   await card.getByRole('button', { name: 'Compartir acceso' }).click()
   const message = await card.getByLabel(`Mensaje para ${collaboratorName}`).inputValue()

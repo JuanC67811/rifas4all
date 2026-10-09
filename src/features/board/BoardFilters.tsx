@@ -44,8 +44,8 @@ export function BoardFilters({ value, onChange, counts, total, mineCount }: Prop
                 'min-h-11 whitespace-nowrap rounded-full border px-4 font-medium transition',
                 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand',
                 pressed
-                  ? 'border-brand bg-brand text-brand-contrast'
-                  : 'border-border bg-surface text-text hover:bg-surface-muted',
+                  ? 'border-forest bg-forest text-forest-ink'
+                  : 'border-input-border bg-surface text-text hover:bg-surface-muted',
               ].join(' ')}
             >
               {option.label} <span className="tabular-nums">({option.count})</span>

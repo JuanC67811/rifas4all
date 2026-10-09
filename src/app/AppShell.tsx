@@ -3,8 +3,13 @@ import { Link, Outlet, useNavigate } from 'react-router'
 import { signOut } from '@/features/auth/api'
 import { useAuth } from '@/features/auth/auth-context'
 import { Brand } from '@/ui/layout'
+import { ThemeToggle } from '@/ui/ThemeToggle'
 
-/** Estructura común: encabezado con la marca y, con sesión, el botón "Salir". */
+const NAV_LINK =
+  'flex min-h-11 items-center rounded-full px-4 font-semibold text-text hover:bg-surface-muted ' +
+  'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand'
+
+/** Estructura común: encabezado con la marca, el tema y, con sesión, Cuenta y Salir. */
 export function AppShell() {
   const { session } = useAuth()
   const navigate = useNavigate()
@@ -24,46 +29,49 @@ export function AppShell() {
   }
 
   return (
-    <div className="min-h-dvh">
+    <div className="flex min-h-dvh flex-col">
       <a
         href="#contenido"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded-full focus:bg-cta focus:px-5 focus:py-3 focus:font-semibold focus:text-cta-ink"
       >
         Saltar al contenido
       </a>
-      <header className="border-b border-border">
-        <div className="mx-auto flex w-full max-w-xl items-center justify-between gap-4 px-4 py-3">
+      <header className="sticky top-0 z-10 border-b border-hairline bg-page/90 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-xl items-center justify-between gap-2 px-4 py-3">
           <Brand />
-          {session && (
-            <div className="flex items-center gap-3">
-              <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">
-                {session.user.email}
-              </span>
-              <Link
-                to="/cuenta"
-                className="flex min-h-11 items-center rounded-lg px-3 font-medium text-brand hover:bg-surface-muted"
-              >
-                Cuenta
-              </Link>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                disabled={signingOut}
-                className="min-h-11 rounded-lg px-3 font-medium text-brand hover:bg-surface-muted"
-              >
-                {signingOut ? 'Saliendo…' : 'Salir'}
-              </button>
-            </div>
-          )}
+          <nav aria-label="Cuenta" className="flex items-center gap-1">
+            {session && (
+              <>
+                <Link to="/cuenta" className={NAV_LINK}>
+                  Cuenta
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  disabled={signingOut}
+                  className={NAV_LINK}
+                >
+                  {signingOut ? 'Saliendo…' : 'Salir'}
+                </button>
+              </>
+            )}
+            <ThemeToggle />
+          </nav>
         </div>
       </header>
-      <div id="contenido">
+      <div id="contenido" className="flex-1">
         <Outlet />
       </div>
-      <footer className="mx-auto w-full max-w-xl px-4 py-8 text-center text-sm text-muted">
-        <Link to="/privacidad" className="underline-offset-4 hover:underline">
-          Privacidad y condiciones
-        </Link>
+      <footer className="border-t border-hairline">
+        <div className="mx-auto flex w-full max-w-xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-muted">
+          <span>Rifas4All · rifas de barrio, sin enredos</span>
+          <Link
+            to="/privacidad"
+            className="font-semibold text-text underline decoration-2 underline-offset-4"
+          >
+            Privacidad y condiciones
+          </Link>
+        </div>
       </footer>
     </div>
   )

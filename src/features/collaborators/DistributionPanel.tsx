@@ -26,7 +26,7 @@ export function DistributionList({ entries }: { entries: DistributionEntry[] }) 
   return (
     <ul className="flex flex-col gap-2">
       {entries.map((entry) => (
-        <li key={entry.collaboratorId} className="rounded-xl bg-surface-muted p-3">
+        <li key={entry.collaboratorId} className="rounded-card bg-surface-muted p-3">
           <p className="font-semibold">
             {entry.displayName}
             {entry.isOrganizer && ' (tú)'} · {entry.count} números
@@ -72,7 +72,7 @@ export function DistributionPanel({
         {METHODS.map((option) => (
           <div
             key={option.value}
-            className="grid grid-cols-[auto_1fr] gap-x-3 rounded-xl border border-border p-3 has-checked:border-brand"
+            className="grid grid-cols-[auto_1fr] gap-x-3 rounded-card ring-1 ring-hairline p-3 has-checked:ring-2 has-checked:ring-brand"
           >
             <input
               id={`metodo-${option.value}`}
@@ -118,7 +118,7 @@ export function DistributionPanel({
           <DistributionList entries={entries} />
 
           {confirming ? (
-            <div className="flex flex-col gap-3 rounded-xl border border-border p-3">
+            <div className="flex flex-col gap-3 rounded-card ring-1 ring-hairline p-3">
               <p>
                 Al confirmar, la rifa queda <strong>activa</strong> y se generan los accesos. Ya no
                 podrás cambiar los colaboradores ni el reparto.

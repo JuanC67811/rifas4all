@@ -6,13 +6,13 @@ Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 10
 
 **[Abrir la app →](https://rifas4all.rifas4all.workers.dev)** · publicada en Cloudflare con Supabase en la nube.
 
-| Tablero en vivo                                                                                 | Registrar un comprador                                                                               | Lista del colaborador                                                                 | Modo oscuro                                                    |
-| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| ![Tablero del organizador con los 100 números, totales y filtros](docs/screenshots/tablero.png) | ![Panel inferior del número 07 con el comprador y las acciones de pago](docs/screenshots/numero.png) | ![Vista del colaborador con sus números resaltados](docs/screenshots/colaborador.png) | ![Tablero en modo oscuro](docs/screenshots/tablero-oscuro.png) |
+| Tablero en vivo                                                                                    | Registrar un comprador                                                                             | Lista del colaborador                                                                                | Modo oscuro                                                    |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![Portada con el titular en mayúsculas y la acción principal en lima](docs/screenshots/inicio.png) | ![Tablero del organizador con el recaudado en un panel verde bosque](docs/screenshots/tablero.png) | ![Panel inferior del número 07 con el comprador y las acciones de pago](docs/screenshots/numero.png) | ![Tablero en modo oscuro](docs/screenshots/tablero-oscuro.png) |
 
-| Activación del colaborador                                                                  | Compartir el acceso                                                           | Resumen y avance por lista                                                                    |
-| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| ![Pantalla "¿Eres María?" con el aviso de responsabilidad](docs/screenshots/activacion.png) | ![Mensaje con enlace y PIN listo para copiar](docs/screenshots/compartir.png) | ![Resumen con avance, dinero recaudado y tabla por colaborador](docs/screenshots/resumen.png) |
+| Activación del colaborador                                                            | Compartir el acceso                                                                         | Resumen y avance por lista                                                    |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| ![Vista del colaborador con sus números resaltados](docs/screenshots/colaborador.png) | ![Pantalla "¿Eres María?" con el aviso de responsabilidad](docs/screenshots/activacion.png) | ![Mensaje con enlace y PIN listo para copiar](docs/screenshots/compartir.png) |
 
 ## Cómo funciona
 
@@ -44,6 +44,21 @@ React 19 · TypeScript estricto · Vite · Tailwind CSS 4 · TanStack Query · R
 - **Privacidad entre colaboradores.** El estado público de cada número y los datos del comprador viven en tablas separadas: RLS filtra filas, no columnas.
 - **Integridad ante concurrencia.** Un número nunca tiene dos ventas activas, aunque se pulse dos veces o se edite desde dos teléfonos a la vez.
 - **Sin sobreingeniería.** Cada dependencia y cada abstracción está justificada en el [diseño técnico](docs/rifas4all-diseno-tecnico.md) o en un ADR.
+
+## Identidad visual
+
+Estilo basado en la referencia **Wise** de mi biblioteca de diseño, adaptado a una app de rifas de barrio:
+
+| Elemento    | Decisión                                                                                                                                                                         |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Color       | Verde bosque `#163300` dominante; lima `#9fe870` **solo** para la acción principal de cada sección (nunca como texto sobre fondo claro); franja verde clara `#e2f6d5` para ritmo |
+| Tipografía  | Inter (sustituto libre de Wise Sans), servida desde la propia app por la CSP; titulares de exhibición en Inter Black, mayúsculas e interlineado cerrado                          |
+| Forma       | Todo lo interactivo en píldora; tarjetas y campos con radio de 10 px; paneles destacados con 28 px                                                                               |
+| Profundidad | Plana: filos finos en lugar de sombras; la única sombra es la del panel inferior, que flota sobre la página                                                                      |
+| Tema oscuro | Derivado de la paleta (bosque profundo + lima), con selector que se recuerda y sin destello al cargar                                                                            |
+| Logo        | Boleto lima con el 4 sobre verde bosque, de la familia 4All (como Sopa4All)                                                                                                      |
+
+Toda la paleta pasa la auditoría automática de contraste WCAG AA en ambos temas.
 
 ## Arquitectura
 

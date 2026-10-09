@@ -8,6 +8,10 @@ import { accessFor, login, openAsCollaborator } from './helpers.ts'
  * con lector de pantalla, pero detecta contraste, etiquetas y roles incorrectos.
  */
 async function expectNoViolations(page: Page, context: string) {
+  // Se mide el estado final: ninguna animación de entrada en curso.
+  await page.waitForFunction(() =>
+    document.getAnimations().every((animation) => animation.playState === 'finished'),
+  )
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze()
@@ -23,7 +27,8 @@ async function expectNoViolations(page: Page, context: string) {
 
 for (const colorScheme of ['light', 'dark'] as const) {
   test.describe(`tema ${colorScheme === 'light' ? 'claro' : 'oscuro'}`, () => {
-    test.use({ colorScheme })
+    // Movimiento reducido: axe mide el estado final, no la página a mitad de su animación.
+    test.use({ colorScheme, reducedMotion: 'reduce' })
 
     test('páginas públicas', async ({ page }) => {
       for (const path of ['/', '/entrar', '/registro', '/recuperar', '/privacidad']) {
@@ -42,7 +47,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(page.getByRole('button', { name: /^Número 00/ })).toBeVisible()
       await expectNoViolations(page, 'Tablero')
 
-      for (const tab of ['Resumen', 'Colaboradores', 'Actividad']) {
+      for (const tab of ['Resumen', 'Accesos', 'Actividad']) {
         await page.getByRole('tab', { name: tab }).click()
         await expect(page.getByRole('tabpanel')).toBeVisible()
         await expectNoViolations(page, tab)

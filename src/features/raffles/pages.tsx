@@ -90,7 +90,7 @@ function RaffleCard({ raffle }: { raffle: Raffle }) {
   return (
     <Link
       to={`/rifas/${raffle.id}`}
-      className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-4 transition hover:border-brand focus-visible:outline-3 focus-visible:outline-brand"
+      className="flex flex-col gap-2 rounded-card bg-surface p-5 ring-1 ring-hairline transition hover:ring-2 hover:ring-brand focus-visible:outline-3 focus-visible:outline-brand"
     >
       <div className="flex items-start justify-between gap-3">
         <h2 className="text-lg font-semibold">{raffle.name}</h2>

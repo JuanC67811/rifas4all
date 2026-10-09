@@ -60,7 +60,7 @@ export function RaffleDashboard({ raffle }: { raffle: Raffle }) {
         },
         {
           id: 'colaboradores',
-          label: 'Colaboradores',
+          label: 'Accesos',
           content: (
             <AccessesPanel
               raffleId={raffle.id}

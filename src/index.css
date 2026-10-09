@@ -1,68 +1,170 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens: colores con nombre semántico. El modo oscuro solo cambia los valores.
- * Los estados de los números (--color-st-*) siempre van acompañados de texto e icono,
- * nunca se distinguen solo por el color.
+ * Identidad visual: estilo Wise (design-library). Verde bosque dominante, lima solo
+ * para la acción principal, todo lo interactivo en píldora, casi sin sombras y sin
+ * degradados. Tipografía: Inter (sustituto de Wise Sans, que es propietaria), servida
+ * desde la propia app para respetar la CSP.
+ *
+ * El modo oscuro se activa con la clase "dark" en <html>: la pone public/theme.js
+ * antes de pintar (preferencia guardada o la del sistema) y el botón de tema la cambia.
  */
-@theme {
-  --color-surface: #ffffff;
-  --color-surface-muted: #f4f4f5;
-  --color-text: #18181b;
-  --color-muted: #52525b;
-  --color-border: #d4d4d8;
-  --color-brand: #0f766e;
-  --color-brand-contrast: #ffffff;
-  --color-danger: #b91c1c;
-  --color-danger-soft: #fef2f2;
-  --color-danger-contrast: #ffffff;
-  --color-success: #15803d;
-  --color-success-soft: #f0fdf4;
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* Estados de los números (siempre acompañados de icono y texto). */
-  --color-st-reserved: #b45309;
-  --color-st-reserved-soft: #fffbeb;
-  --color-st-pending: #1d4ed8;
-  --color-st-pending-soft: #eff6ff;
-  --color-st-paid: #15803d;
-  --color-st-paid-soft: #dcfce7;
-  --color-st-overdue: #b91c1c;
-  --color-st-overdue-soft: #fee2e2;
+:root {
+  /* Superficies */
+  --page: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f4f6f2; /* Fog aclarado: fondo de tarjetas internas */
+  --wash: #e2f6d5; /* Linen Mist: franjas verdes claras y badges */
+  --forest: #163300; /* Forest Ink: texto fuerte, navegación, secciones oscuras */
+  --forest-ink: #ffffff; /* texto sobre secciones verde bosque */
+  --cta: #9fe870; /* Lime Voltage: SOLO relleno de la acción principal */
+  --cta-ink: #163300;
+  /* Texto */
+  --text: #0e0f0c; /* Obsidian */
+  --body: #454745; /* Charcoal */
+  --muted: #5f615f; /* Slate oscurecido para contraste AA en textos pequeños */
+  --border: #d6dad3;
+  --input-border: #868685; /* Pebble: borde de campos con contraste 3:1 */
+  --hairline: rgb(14 15 12 / 0.12);
+  /* Marca para enlaces y bordes activos (nunca lima sobre claro) */
+  --brand: #163300;
+  --brand-contrast: #ffffff;
+  /* Estados de mensajes */
+  --danger: #cb272f; /* Alarm Red */
+  --danger-soft: #fdeceb;
+  --danger-contrast: #ffffff;
+  --success: #054d28; /* Spruce */
+  --success-soft: #e2f6d5;
+  /* Estados de los números (siempre con icono y texto, nunca solo color) */
+  --st-reserved: #8a6a00;
+  --st-reserved-soft: #fff6d9;
+  --st-pending: #0b4c72; /* Signal Blue */
+  --st-pending-soft: #e4f0f7;
+  --st-paid: #054d28;
+  --st-paid-soft: #e2f6d5;
+  --st-overdue: #cb272f;
+  --st-overdue-soft: #fdeceb;
+  --shadow-elevated: 0 10px 32px rgb(0 0 0 / 0.15);
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-surface: #18181b;
-    --color-surface-muted: #27272a;
-    --color-text: #fafafa;
-    --color-muted: #a1a1aa;
-    --color-border: #3f3f46;
-    --color-brand: #2dd4bf;
-    --color-brand-contrast: #042f2e;
-    --color-danger: #f87171;
-    --color-danger-soft: #3f1d1d;
-    --color-danger-contrast: #1f0a0a;
-    --color-success: #4ade80;
-    --color-success-soft: #14321f;
-    --color-st-reserved: #fbbf24;
-    --color-st-reserved-soft: #3a2a0a;
-    --color-st-pending: #60a5fa;
-    --color-st-pending-soft: #12234a;
-    --color-st-paid: #4ade80;
-    --color-st-paid-soft: #123222;
-    --color-st-overdue: #f87171;
-    --color-st-overdue-soft: #3f1515;
+/* Wise no define tema oscuro: se deriva de su paleta (bosque profundo + lima). */
+.dark {
+  --page: #0b0d09;
+  --surface: #13170f;
+  --surface-muted: #1c2117;
+  --wash: #1b2a12;
+  --forest: #1f3d0c;
+  --forest-ink: #f1f6ec;
+  --cta: #9fe870;
+  --cta-ink: #163300;
+  --text: #f1f6ec;
+  --body: #d2d8cc;
+  --muted: #a7ae9f;
+  --border: #33402a;
+  --input-border: #7d8775;
+  --hairline: rgb(241 246 236 / 0.14);
+  --brand: #9fe870; /* sobre fondo oscuro, la lima sí funciona como texto */
+  --brand-contrast: #163300;
+  --danger: #ff8a8f;
+  --danger-soft: #3a1416;
+  --danger-contrast: #2a0507;
+  --success: #9fe870;
+  --success-soft: #1b2a12;
+  --st-reserved: #f5c84b;
+  --st-reserved-soft: #2f2608;
+  --st-pending: #7cc3ef;
+  --st-pending-soft: #0e2633;
+  --st-paid: #9fe870;
+  --st-paid-soft: #1b2a12;
+  --st-overdue: #ff8a8f;
+  --st-overdue-soft: #3a1416;
+  --shadow-elevated: 0 10px 32px rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-wash: var(--wash);
+  --color-forest: var(--forest);
+  --color-forest-ink: var(--forest-ink);
+  --color-cta: var(--cta);
+  --color-cta-ink: var(--cta-ink);
+  --color-text: var(--text);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-input-border: var(--input-border);
+  --color-hairline: var(--hairline);
+  --color-brand: var(--brand);
+  --color-brand-contrast: var(--brand-contrast);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-contrast: var(--danger-contrast);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-st-reserved: var(--st-reserved);
+  --color-st-reserved-soft: var(--st-reserved-soft);
+  --color-st-pending: var(--st-pending);
+  --color-st-pending-soft: var(--st-pending-soft);
+  --color-st-paid: var(--st-paid);
+  --color-st-paid-soft: var(--st-paid-soft);
+  --color-st-overdue: var(--st-overdue);
+  --color-st-overdue-soft: var(--st-overdue-soft);
+
+  --shadow-elevated: var(--shadow-elevated);
+  --radius-card: 10px;
+  --radius-panel: 28px;
+}
+
+@theme {
+  --animate-rise: rise 320ms cubic-bezier(0.2, 0.8, 0.3, 1);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 
 html {
   /* 16 px mínimo: evita el zoom automático de iOS al enfocar campos. */
   font-size: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: var(--page);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Titulares de exhibición (estilo Wise): Inter Black, interlineado muy cerrado. */
+.display {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 /*

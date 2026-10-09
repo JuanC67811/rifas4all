@@ -43,18 +43,18 @@ export function BottomSheet({
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
-      className="fixed inset-x-0 bottom-0 top-auto m-0 max-h-[90dvh] w-full max-w-none overflow-y-auto rounded-t-2xl bg-surface p-0 text-text backdrop:bg-black/60 sm:inset-0 sm:m-auto sm:max-w-lg sm:rounded-2xl"
+      className="fixed inset-x-0 bottom-0 top-auto m-0 max-h-[90dvh] w-full max-w-none overflow-y-auto rounded-t-panel bg-surface p-0 text-text shadow-elevated backdrop:bg-black/60 sm:inset-0 sm:m-auto sm:max-w-lg sm:rounded-panel"
     >
       {open && (
         <div className="flex flex-col gap-4 p-4 pb-6">
           <header className="flex items-center justify-between gap-3">
-            <h2 id={titleId} className="text-xl font-bold">
+            <h2 id={titleId} className="text-2xl font-black tracking-tight">
               {title}
             </h2>
             <button
               type="button"
               onClick={onClose}
-              className="min-h-11 rounded-lg px-3 font-medium text-brand hover:bg-surface-muted"
+              className="min-h-11 rounded-full px-4 font-semibold text-text underline decoration-2 underline-offset-4 hover:bg-surface-muted"
             >
               Cerrar
             </button>

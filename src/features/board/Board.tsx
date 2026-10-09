@@ -83,24 +83,33 @@ export function Board({
   return (
     <Card>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-xl font-extrabold tracking-tight">
           {isCollaborator ? 'Tablero' : 'Tablero de números'}
         </h2>
-        <p className="text-sm text-muted" aria-live="polite">
+        <p
+          className="rounded-full bg-wash px-3 py-1 text-sm font-semibold text-forest dark:text-brand"
+          aria-live="polite"
+        >
           <span aria-hidden="true">{liveLabel.icon}</span> {liveLabel.text}
         </p>
       </div>
 
-      <dl className="grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-surface-muted p-3">
-          <dt className="text-sm text-muted">
+      {/* La cifra más importante, en el panel verde bosque (la lima va como texto). */}
+      <dl className="flex flex-wrap items-end justify-between gap-4 rounded-panel bg-forest p-6 text-forest-ink">
+        <div>
+          <dt className="text-sm font-semibold uppercase tracking-wide opacity-85">
             {isCollaborator ? 'Recaudado por ti' : 'Recaudado'}
           </dt>
-          <dd className="text-lg font-bold">{formatMoney(collected, currency)}</dd>
+          <dd className="text-4xl font-black tracking-tight text-cta tabular-nums">
+            {formatMoney(collected, currency)}
+          </dd>
         </div>
-        <div className="rounded-xl bg-surface-muted p-3">
-          <dt className="text-sm text-muted">Pendiente de cobro</dt>
-          <dd className="text-lg font-bold">{formatMoney(pending, currency)}</dd>
+        <div className="rounded-full bg-forest-ink px-4 py-2 text-forest">
+          <dt className="sr-only">Pendiente de cobro</dt>
+          <dd className="font-semibold tabular-nums">
+            <span aria-hidden="true">Por cobrar </span>
+            {formatMoney(pending, currency)}
+          </dd>
         </div>
       </dl>
 

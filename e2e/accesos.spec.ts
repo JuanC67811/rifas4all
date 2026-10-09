@@ -36,7 +36,7 @@ test('de la configuración al acceso del colaborador', async ({ page, browser },
 
   await page.getByRole('button', { name: 'Confirmar reparto y activar la rifa' }).click()
   await page.getByRole('button', { name: 'Sí, confirmar y activar' }).click()
-  await page.getByRole('tab', { name: 'Colaboradores' }).click()
+  await page.getByRole('tab', { name: 'Accesos' }).click()
   await expect(page.getByRole('heading', { name: 'Colaboradores y accesos' })).toBeVisible()
 
   // ---------------------------------------------------------------------------
@@ -79,7 +79,7 @@ test('de la configuración al acceso del colaborador', async ({ page, browser },
   // La organizadora ve el dispositivo y pausa el acceso
   // ---------------------------------------------------------------------------
   await page.reload()
-  await page.getByRole('tab', { name: 'Colaboradores' }).click()
+  await page.getByRole('tab', { name: 'Accesos' }).click()
   await expect(carlos.getByText('Activo en 1 dispositivo')).toBeVisible()
   await carlos.getByRole('button', { name: 'Pausar acceso' }).click()
   await expect(carlos.getByText('Acceso pausado')).toBeVisible()
