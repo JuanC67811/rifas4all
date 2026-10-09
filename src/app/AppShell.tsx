@@ -60,6 +60,11 @@ export function AppShell() {
       <div id="contenido">
         <Outlet />
       </div>
+      <footer className="mx-auto w-full max-w-xl px-4 py-8 text-center text-sm text-muted">
+        <Link to="/privacidad" className="underline-offset-4 hover:underline">
+          Privacidad y condiciones
+        </Link>
+      </footer>
     </div>
   )
 }

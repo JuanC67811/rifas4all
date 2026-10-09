@@ -76,7 +76,14 @@ export function StatsPanel({
 
       <Card>
         <h2 className="text-lg font-semibold">Avance por lista</h2>
-        <div className="-mx-4 overflow-x-auto px-4">
+        {/* WCAG (axe: scrollable-region-focusable): una región con desplazamiento debe poder
+            enfocarse para desplazarla con el teclado en el teléfono. */}
+        <section
+          aria-label="Tabla de avance por lista"
+          // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          className="-mx-4 overflow-x-auto px-4 focus-visible:outline-3 focus-visible:outline-brand"
+        >
           <table className="w-full min-w-md text-left">
             <caption className="sr-only">
               Números vendidos, pagados y por cobrar de cada lista
@@ -124,7 +131,7 @@ export function StatsPanel({
               })}
             </tbody>
           </table>
-        </div>
+        </section>
       </Card>
     </>
   )

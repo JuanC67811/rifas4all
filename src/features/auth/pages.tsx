@@ -183,6 +183,13 @@ export function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             error={errors.password}
           />
+          <p className="text-sm text-muted">
+            Al crear tu cuenta aceptas la{' '}
+            <Link to="/privacidad" className="text-brand underline-offset-4 hover:underline">
+              política de privacidad y condiciones
+            </Link>
+            .
+          </p>
           <Button type="submit" fullWidth loading={submitting} loadingText="Creando cuenta…">
             Crear cuenta
           </Button>
