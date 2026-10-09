@@ -17,7 +17,7 @@ Aplicación web gratuita y mobile-first para administrar **rifas pequeñas de 10
 ## Cómo funciona
 
 1. La organizadora crea una cuenta y una rifa (00–99).
-2. Agrega de 1 a 12 colaboradores; la app reparte los 100 números de forma equitativa, en orden o al azar.
+2. La vende sola o suma hasta 12 colaboradores; la app reparte los 100 números en partes iguales (ella incluida, si también vende), en orden o al azar.
 3. Copia el mensaje de cada colaborador (enlace personal + PIN opcional) y lo envía por donde quiera.
 4. Cada colaborador abre su enlace, confirma "Sí, soy Carlos" y gestiona **solo sus números**: compradores, reservas y pagos.
 5. Todos ven el tablero **en tiempo real**, sin ver los compradores de los demás.

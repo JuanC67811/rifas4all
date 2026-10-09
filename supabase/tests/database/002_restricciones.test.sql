@@ -91,8 +91,8 @@ insert into public.collaborators (id, raffle_id, position, display_name, phone_e
 
 select throws_ok(
   $$ insert into public.collaborators (raffle_id, position, display_name)
-     values ('10000000-0000-0000-0000-000000000001', 13, 'José') $$,
-  '23514', null, 'no puede haber un colaborador en la posición 13'
+     values ('10000000-0000-0000-0000-000000000001', 14, 'José') $$,
+  '23514', null, 'como mucho 13 listas: el organizador y 12 colaboradores'
 );
 select throws_ok(
   $$ insert into public.collaborators (raffle_id, position, display_name)

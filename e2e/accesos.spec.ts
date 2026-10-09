@@ -16,6 +16,9 @@ test('de la configuración al acceso del colaborador', async ({ page, browser },
   await page.getByRole('button', { name: 'Crear rifa' }).click()
   await expect(page.getByRole('heading', { name: raffleName })).toBeVisible()
 
+  // Solo colaboradores externos: la organizadora no vende en esta prueba.
+  await page.getByLabel('Yo también vendo números').uncheck()
+  await page.getByRole('button', { name: '+ Agregar colaborador' }).click()
   await page.getByLabel('Nombre').first().fill('Carlos')
   await page.getByLabel('Teléfono (opcional)').first().fill('8888 7777')
   await page.getByLabel('Proteger su acceso con un PIN de 4 dígitos').first().check()

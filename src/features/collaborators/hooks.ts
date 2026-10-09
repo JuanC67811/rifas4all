@@ -42,7 +42,13 @@ export function useSaveCollaborators(raffleId: string) {
   const queryClient = useQueryClient()
   const invalidate = useInvalidateRaffle(raffleId)
   return useMutation({
-    mutationFn: (drafts: CollaboratorDraft[]) => saveCollaborators(raffleId, drafts),
+    mutationFn: ({
+      drafts,
+      organizerSells,
+    }: {
+      drafts: CollaboratorDraft[]
+      organizerSells: boolean
+    }) => saveCollaborators(raffleId, drafts, organizerSells),
     onSuccess: () => {
       // Guardar la lista descarta la vista previa del reparto en el servidor.
       queryClient.setQueryData(queryKeys.distribution(raffleId), [])

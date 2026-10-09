@@ -44,6 +44,7 @@ describe('rowsChanged', () => {
       id: '1',
       position: 1,
       displayName: 'Carlos',
+      isOrganizer: false,
       phone: '+50688887777',
       pinEnabled: true,
       isPaused: false,
@@ -54,12 +55,31 @@ describe('rowsChanged', () => {
   ]
 
   it('no detecta cambios si el teléfono se escribe con otro formato', () => {
-    expect(rowsChanged([row('1', 'Carlos', '8888 7777', true)], saved)).toBe(false)
+    expect(rowsChanged([row('1', 'Carlos', '8888 7777', true)], false, saved)).toBe(false)
+  })
+
+  it('detecta que el organizador empieza o deja de vender', () => {
+    expect(rowsChanged([row('1', 'Carlos', '8888 7777', true)], true, saved)).toBe(true)
+  })
+
+  it('ignora la lista del organizador al comparar las filas', () => {
+    const withOrganizer: Collaborator[] = [
+      {
+        ...(saved[0] as Collaborator),
+        id: 'org',
+        displayName: 'Juan',
+        isOrganizer: true,
+        phone: null,
+        pinEnabled: false,
+      },
+      ...saved,
+    ]
+    expect(rowsChanged([row('1', 'Carlos', '8888 7777', true)], true, withOrganizer)).toBe(false)
   })
 
   it('detecta un nombre, PIN o fila distintos', () => {
-    expect(rowsChanged([row('1', 'Carla', '8888 7777', true)], saved)).toBe(true)
-    expect(rowsChanged([row('1', 'Carlos', '8888 7777', false)], saved)).toBe(true)
-    expect(rowsChanged([], saved)).toBe(true)
+    expect(rowsChanged([row('1', 'Carla', '8888 7777', true)], false, saved)).toBe(true)
+    expect(rowsChanged([row('1', 'Carlos', '8888 7777', false)], false, saved)).toBe(true)
+    expect(rowsChanged([], false, saved)).toBe(true)
   })
 })

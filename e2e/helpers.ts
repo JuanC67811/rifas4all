@@ -24,6 +24,7 @@ export async function createActiveRaffle(
   page: Page,
   name: string,
   collaborators: CollaboratorSpec[],
+  { organizerSells = false }: { organizerSells?: boolean } = {},
 ) {
   await page.getByRole('link', { name: '+ Nueva rifa' }).click()
   await page.getByLabel('Nombre de la rifa').fill(name)
@@ -33,8 +34,9 @@ export async function createActiveRaffle(
   await page.getByRole('button', { name: 'Crear rifa' }).click()
   await expect(page.getByRole('heading', { name })).toBeVisible()
 
+  if (!organizerSells) await page.getByLabel('Yo también vendo números').uncheck()
   for (const [index, collaborator] of collaborators.entries()) {
-    if (index > 0) await page.getByRole('button', { name: '+ Agregar colaborador' }).click()
+    await page.getByRole('button', { name: '+ Agregar colaborador' }).click()
     await page.getByLabel('Nombre', { exact: true }).nth(index).fill(collaborator.name)
     if (collaborator.pin) {
       await page.getByLabel('Proteger su acceso con un PIN de 4 dígitos').nth(index).check()

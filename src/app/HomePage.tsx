@@ -6,7 +6,7 @@ import { useDocumentTitle } from '@/ui/useDocumentTitle'
 
 const STEPS = [
   'Crea tu rifa de 100 números (00 a 99).',
-  'Agrega hasta 12 colaboradores: el sistema reparte los números.',
+  'Véndela tú solo o suma hasta 12 colaboradores: los números se reparten en partes iguales.',
   'Comparte a cada uno su enlace. No necesitan crear cuenta.',
   'Sigue las ventas y los pagos en tiempo real.',
 ]

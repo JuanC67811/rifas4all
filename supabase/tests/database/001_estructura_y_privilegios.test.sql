@@ -102,7 +102,7 @@ select set_eq(
     'public.update_raffle(uuid, jsonb)',
     'public.close_raffle(uuid)',
     'public.delete_raffle(uuid, text)',
-    'public.set_collaborators(uuid, jsonb)',
+    'public.set_collaborators(uuid, jsonb, boolean)',
     'public.update_collaborator(uuid, text, text)',
     'public.preview_distribution(uuid, distribution_method)',
     'public.confirm_distribution(uuid)',

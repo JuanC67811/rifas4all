@@ -28,7 +28,8 @@ export function DistributionList({ entries }: { entries: DistributionEntry[] }) 
       {entries.map((entry) => (
         <li key={entry.collaboratorId} className="rounded-xl bg-surface-muted p-3">
           <p className="font-semibold">
-            {entry.displayName} · {entry.count} números
+            {entry.displayName}
+            {entry.isOrganizer && ' (tú)'} · {entry.count} números
           </p>
           <p className="break-words text-muted tabular-nums">{formatNumberList(entry.numbers)}</p>
         </li>

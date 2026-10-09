@@ -15,13 +15,21 @@ type Props = {
   myCollaboratorId?: string
   ownerName: (collaboratorId: string) => string | null
   onSelect: (number: number) => void
+  /** Atenuar los números ajenos (vista del colaborador). */
+  dimOthers?: boolean
 }
 
 /**
  * Cuadrícula de números: 5 columnas en el teléfono (botones de ~60 px), 10 en
  * pantallas anchas. Cada botón anuncia número, estado y dueño al lector de pantalla.
  */
-export function NumberGrid({ cells, myCollaboratorId, ownerName, onSelect }: Props) {
+export function NumberGrid({
+  cells,
+  myCollaboratorId,
+  ownerName,
+  onSelect,
+  dimOthers = true,
+}: Props) {
   if (cells.length === 0) {
     return <p className="py-6 text-center text-muted">Ningún número coincide con este filtro.</p>
   }
@@ -31,7 +39,7 @@ export function NumberGrid({ cells, myCollaboratorId, ownerName, onSelect }: Pro
       {cells.map((cell) => {
         const info = NUMBER_STATUS_INFO[cell.status]
         const mine = myCollaboratorId !== undefined && cell.collaboratorId === myCollaboratorId
-        const notMine = myCollaboratorId !== undefined && !mine
+        const notMine = dimOthers && myCollaboratorId !== undefined && !mine
         const owner = ownerName(cell.collaboratorId)
         const label = [
           `Número ${formatRaffleNumber(cell.number)}`,

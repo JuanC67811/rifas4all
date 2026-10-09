@@ -19,13 +19,16 @@ export function emptyRow(): CollaboratorRow {
   return { key: `nuevo-${nextKey}`, displayName: '', phone: '', pinEnabled: false }
 }
 
+/** Filas editables: solo los colaboradores externos (la lista del organizador no se edita). */
 export function rowsFromCollaborators(collaborators: Collaborator[]): CollaboratorRow[] {
-  return collaborators.map((collaborator) => ({
-    key: collaborator.id,
-    displayName: collaborator.displayName,
-    phone: collaborator.phone ?? '',
-    pinEnabled: collaborator.pinEnabled,
-  }))
+  return collaborators
+    .filter((collaborator) => !collaborator.isOrganizer)
+    .map((collaborator) => ({
+      key: collaborator.id,
+      displayName: collaborator.displayName,
+      phone: collaborator.phone ?? '',
+      pinEnabled: collaborator.pinEnabled,
+    }))
 }
 
 /**
@@ -66,10 +69,16 @@ export function validateRows(
 }
 
 /** ¿Las filas difieren de lo guardado? (si es así, la vista previa del reparto no vale). */
-export function rowsChanged(rows: CollaboratorRow[], saved: Collaborator[]): boolean {
-  if (rows.length !== saved.length) return true
+export function rowsChanged(
+  rows: CollaboratorRow[],
+  organizerSells: boolean,
+  saved: Collaborator[],
+): boolean {
+  const externals = saved.filter((collaborator) => !collaborator.isOrganizer)
+  if (organizerSells !== saved.some((collaborator) => collaborator.isOrganizer)) return true
+  if (rows.length !== externals.length) return true
   return rows.some((row, index) => {
-    const original = saved[index]
+    const original = externals[index]
     return (
       !original ||
       row.displayName.trim() !== original.displayName ||

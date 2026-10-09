@@ -22,6 +22,7 @@ export function RaffleDashboard({ raffle }: { raffle: Raffle }) {
   }
 
   const names = new Map(collaborators.data.map((c) => [c.id, c.displayName]))
+  const organizerList = collaborators.data.find((c) => c.isOrganizer)
 
   return (
     <Tabs
@@ -41,6 +42,8 @@ export function RaffleDashboard({ raffle }: { raffle: Raffle }) {
               reminderTemplate={raffle.reminderTemplate}
               acceptsChanges={raffle.status === 'active'}
               collaboratorNames={names}
+              myCollaboratorId={organizerList?.id}
+              canEditAll
             />
           ),
         },

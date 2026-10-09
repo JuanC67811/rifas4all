@@ -10,6 +10,8 @@ export type Collaborator = {
   id: string
   position: number
   displayName: string
+  /** La lista del propio organizador: sin enlace ni PIN (entra con su cuenta). */
+  isOrganizer: boolean
   phone: string | null
   pinEnabled: boolean
   isPaused: boolean
@@ -28,6 +30,7 @@ export type CollaboratorDraft = {
 export type DistributionEntry = {
   collaboratorId: string
   displayName: string
+  isOrganizer: boolean
   position: number
   count: number
   numbers: number[]
@@ -45,7 +48,7 @@ export async function listCollaborators(raffleId: string): Promise<Collaborator[
     supabase
       .from('collaborators')
       .select(
-        'id, position, display_name, phone_e164, pin_enabled, is_paused, first_activated_at, last_activity_at',
+        'id, position, display_name, is_organizer, phone_e164, pin_enabled, is_paused, first_activated_at, last_activity_at',
       )
       .eq('raffle_id', raffleId)
       .order('position'),
@@ -65,6 +68,7 @@ export async function listCollaborators(raffleId: string): Promise<Collaborator[
     id: row.id,
     position: row.position,
     displayName: row.display_name,
+    isOrganizer: row.is_organizer,
     phone: row.phone_e164,
     pinEnabled: row.pin_enabled,
     isPaused: row.is_paused,
@@ -74,10 +78,15 @@ export async function listCollaborators(raffleId: string): Promise<Collaborator[
   }))
 }
 
-export async function saveCollaborators(raffleId: string, drafts: CollaboratorDraft[]) {
+export async function saveCollaborators(
+  raffleId: string,
+  drafts: CollaboratorDraft[],
+  organizerSells: boolean,
+) {
   unwrap(
     await supabase.rpc('set_collaborators', {
       p_raffle_id: raffleId,
+      p_organizer_sells: organizerSells,
       p_collaborators: drafts.map((draft) => ({
         display_name: draft.displayName,
         phone_e164: draft.phone,
@@ -90,6 +99,7 @@ export async function saveCollaborators(raffleId: string, drafts: CollaboratorDr
 type SummaryRow = {
   collaborator_id: string
   display_name: string
+  is_organizer?: boolean
   position: number
   count: number
   numbers: number[]
@@ -99,6 +109,7 @@ function toDistribution(value: unknown): DistributionEntry[] {
   return ((value as SummaryRow[] | null) ?? []).map((row) => ({
     collaboratorId: row.collaborator_id,
     displayName: row.display_name,
+    isOrganizer: row.is_organizer ?? false,
     position: row.position,
     count: row.count,
     numbers: row.numbers,

@@ -117,6 +117,7 @@ export type Database = {
           display_name: string
           first_activated_at: string | null
           id: string
+          is_organizer: boolean
           is_paused: boolean
           last_activity_at: string | null
           phone_e164: string | null
@@ -130,6 +131,7 @@ export type Database = {
           display_name: string
           first_activated_at?: string | null
           id?: string
+          is_organizer?: boolean
           is_paused?: boolean
           last_activity_at?: string | null
           phone_e164?: string | null
@@ -142,6 +144,7 @@ export type Database = {
           display_name?: string
           first_activated_at?: string | null
           id?: string
+          is_organizer?: boolean
           is_paused?: boolean
           last_activity_at?: string | null
           phone_e164?: string | null
@@ -526,7 +529,7 @@ export type Database = {
         Returns: undefined
       }
       set_collaborators: {
-        Args: { p_collaborators: Json; p_raffle_id: string }
+        Args: { p_collaborators: Json; p_organizer_sells?: boolean; p_raffle_id: string }
         Returns: undefined
       }
       update_buyer: {

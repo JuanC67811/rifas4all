@@ -24,6 +24,8 @@ type Props = {
   acceptsChanges: boolean
   /** Colaborador que mira; sin valor, es el organizador (puede editar todo). */
   myCollaboratorId?: string
+  /** Organizador: puede actuar sobre todos los números aunque tenga su propia lista. */
+  canEditAll?: boolean
   /** Nombres de colaboradores visibles para quien mira. */
   collaboratorNames: Map<string, string>
 }
@@ -44,16 +46,21 @@ export function Board({
   reminderTemplate,
   acceptsChanges,
   myCollaboratorId,
+  canEditAll = false,
   collaboratorNames,
 }: Props) {
   const board = useBoard(raffleId)
   const sales = useSales(raffleId)
   const live = useLiveBoard(raffleId)
-  const [filter, setFilter] = useState<BoardFilter>(myCollaboratorId ? 'mine' : 'all')
+  const [filter, setFilter] = useState<BoardFilter>(
+    myCollaboratorId && !canEditAll ? 'mine' : 'all',
+  )
   const [selected, setSelected] = useState<number | null>(null)
 
   const cells = board.data ?? []
-  const isCollaborator = myCollaboratorId !== undefined
+  // Colaborador: solo ve y gestiona su lista. El organizador puede tener lista propia
+  // (si también vende), pero gestiona todo.
+  const isCollaborator = myCollaboratorId !== undefined && !canEditAll
   const relevant = isCollaborator
     ? cells.filter((c) => c.collaboratorId === myCollaboratorId)
     : cells
@@ -106,11 +113,16 @@ export function Board({
         onChange={setFilter}
         counts={counts}
         total={cells.length}
-        mineCount={isCollaborator ? relevant.length : undefined}
+        mineCount={
+          myCollaboratorId
+            ? cells.filter((c) => c.collaboratorId === myCollaboratorId).length
+            : undefined
+        }
       />
       <NumberGrid
         cells={visible}
         myCollaboratorId={myCollaboratorId}
+        dimOthers={isCollaborator}
         ownerName={ownerName}
         onSelect={setSelected}
       />

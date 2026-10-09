@@ -52,15 +52,31 @@ export function AccessesPanel({
       <ul className="flex flex-col gap-3">
         {collaborators.map((collaborator) => (
           <li key={collaborator.id}>
-            <CollaboratorAccess
-              raffleId={raffleId}
-              collaborator={collaborator}
-              numbers={
-                distribution.find((entry) => entry.collaboratorId === collaborator.id)?.numbers ??
-                []
-              }
-              readOnly={readOnly}
-            />
+            {collaborator.isOrganizer ? (
+              <article className="flex flex-col gap-1 rounded-xl bg-surface-muted p-3">
+                <h3 className="font-semibold">{collaborator.displayName} (tú)</h3>
+                <p className="text-sm text-muted">
+                  Tu propia lista:{' '}
+                  <span className="tabular-nums">
+                    {formatNumberList(
+                      distribution.find((entry) => entry.collaboratorId === collaborator.id)
+                        ?.numbers ?? [],
+                    )}
+                  </span>
+                  . No necesita enlace: entras con tu cuenta.
+                </p>
+              </article>
+            ) : (
+              <CollaboratorAccess
+                raffleId={raffleId}
+                collaborator={collaborator}
+                numbers={
+                  distribution.find((entry) => entry.collaboratorId === collaborator.id)?.numbers ??
+                  []
+                }
+                readOnly={readOnly}
+              />
+            )}
           </li>
         ))}
       </ul>
