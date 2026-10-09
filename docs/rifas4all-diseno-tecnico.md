@@ -1,6 +1,6 @@
 # Rifas4All — Documento de diseño técnico (v0.3)
 
-> Estado: **borrador para aprobación**. Sin código.
+> Estado: **aprobado e implementado** (2026-10-09). El código sigue este documento; las desviaciones se registran en los ADR de `docs/adr/`.
 > Fecha: 2026-10-08. Sustituye a v0.1 (`docs/archivo/`). Motivos del cambio: `docs/rifas4all-revision-critica-v0.1.md` (los IDs H-xx remiten ahí).
 > Convención: **[OBL]** obligatorio · **[REC]** recomendación · **[FUT]** futuro, fuera del MVP · **[SUP]** suposición revisable.
 
